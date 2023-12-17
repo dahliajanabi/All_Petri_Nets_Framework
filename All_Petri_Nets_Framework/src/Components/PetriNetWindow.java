@@ -245,7 +245,11 @@ public class PetriNetWindow extends JFrame {
 			File file = fileChooser.getSelectedFile();
 
 			FileWriter fw = new FileWriter(file.getPath());
-			for (int i = 0; i < model.getSize(); i++) {
+//			for (int i = 0; i < model.getSize(); i++) {
+//				fw.write(model.get(i));
+//				fw.write("\n");
+//			}
+			for (int i = model.getSize()-1; i >=0; i--) {
 				fw.write(model.get(i));
 				fw.write("\n");
 			}
