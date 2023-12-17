@@ -20,12 +20,12 @@ import MetricsClasses.Metrics;
 public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable {
 
 	public Metrics Metrics = new Metrics();
-	public String PrintMatrics()
-	{
+
+	public String PrintMatrics() {
 		util.ComputeMatrics(this);
 		return Metrics.toString();
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -156,7 +156,8 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 						trr.InitialDelay = trr.Delay;
 						ExecutionList.add(trr);
 					} else {
-						conditionsStatus += "[" + Transitions.get(i).TransitionName + " conditions are false]" + Transitions.get(i).Delay ;
+						conditionsStatus += "[" + Transitions.get(i).TransitionName + " conditions are false]"
+								+ Transitions.get(i).Delay;
 					}
 				}
 			}
@@ -242,6 +243,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 
 	private DataOverNetwork inputdata = new DataOverNetwork();
 	private boolean stop;
+	public boolean NonBooking = false;
 	public Integer NetworkPort = 0;
 
 	public class NetworkListener implements Runnable {
@@ -304,7 +306,11 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 
 	@Override
 	public void run() {
-		Start();
+		if (NonBooking) {
+			StartNonBooking();
+		} else {
+			Start();
+		}
 	}
 
 	public boolean Printable = true;
@@ -325,4 +331,84 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 	public boolean GetToken() {
 		return this.token;
 	}
+
+	public void StartNonBooking() {
+		PetriState = PetriNetState.Started;
+		networkThread = new Thread();
+
+		NetworkListener myRunnable = new NetworkListener(this);
+		networkThread = new Thread(myRunnable);
+		networkThread.start();
+
+		msg = "####################  " + PetriNetName + " StartNonBooking  #####################";
+		System.out.println(msg);
+		m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+
+		ExecutionList = new ArrayList<PetriTransition>();
+		StopFlag = false;
+		PauseFlag = false;
+		while (!StopFlag) {
+			try {
+				Thread.sleep(Delay);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+
+			if (PauseFlag) {
+				continue;
+			}
+
+			PrintPetri();
+			String conditionsStatus = "";
+			for (int i = 0; i < Transitions.size(); ++i) {
+				if (!util.TransitionExist(Transitions.get(i).GetName(), ExecutionList)) {
+					if (Transitions.get(i).CheckConditions()) {
+
+						PetriTransition trr = Transitions.get(i);
+						trr.InitialDelay = trr.Delay;
+						ExecutionList.add(trr);
+					} else {
+						conditionsStatus += "[" + Transitions.get(i).TransitionName + " conditions are false]"
+								+ Transitions.get(i).Delay;
+					}
+				}
+			}
+			if (conditionsStatus != "") {
+				m_lDataLoadFinished.onDataLoadFinishedListener(conditionsStatus);
+			}
+			PrintExeList();
+			for (int i = 0; i < ExecutionList.size(); ++i) {
+				if (ExecutionList.get(i).InitialDelay == 0) {
+					try {
+
+						if (ExecutionList.get(i).CheckConditions()) {
+							try {
+								ExecutionList.get(i).BookTokens();
+							} catch (CloneNotSupportedException e) {
+								msg = e.getMessage();
+								m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+								e.printStackTrace();
+								System.out.print(msg);
+							}
+							ExecutionList.get(i).Activate();
+						}
+					} catch (CloneNotSupportedException e) {
+						msg = e.getMessage();
+						m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+						e.printStackTrace();
+						System.out.print(msg);
+					}
+				}
+				ExecutionList.get(i).InitialDelay--;
+			}
+
+			for (int i = 0; i < ExecutionList.size(); ++i) {
+				if (ExecutionList.get(i).InitialDelay < 0) {
+					ExecutionList.remove(i);
+					i--;
+				}
+			}
+		}
+	}
+
 }
