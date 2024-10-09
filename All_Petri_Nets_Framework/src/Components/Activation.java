@@ -1010,6 +1010,11 @@ public class Activation implements Serializable {
 
 				DF1.Value.GenerateFuzzyToken(placeName1.Weight * DF1.Value.Value);
 
+				String msg= placeName1.PlaceName + " * Weight(" + placeName1.Weight + ") ------>>>>>>>>>"
+						+ DF1.Value.toString();
+				
+				this.Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+				System.out.println(msg);
 				ArrayList<FuzzyVectorValue> DF1Values = DF1.Value.Vector.GetNoneZeroValues();
 
 				ArrayList<FLRSPart> TriggeredMapping = new ArrayList<FLRSPart>();
@@ -1021,34 +1026,49 @@ public class Activation implements Serializable {
 					}
 				}
 
-				Float SumOutput1 = 0f;
-				Float SumOutput2 = 0f;
+				Float SumOutput1 = null;
+				Float SumOutput2 = null;
 
 				for (FLRSPart flrsPart : TriggeredMapping) {
 
 					FuzzyVectorValue fi11 = DF1Values.stream().filter((x) -> x.Zone == flrsPart.Input1).findFirst()
 							.orElse(null);
-		
 
 					FuzzyVectorValue fi21 = DF1Values.stream().filter((x) -> x.Zone == flrsPart.Input1).findFirst()
 							.orElse(null);
 
-					SumOutput1 += util.FuzzyZoneToValue(flrsPart.Value.Value1) * fi11.Value;
+					if (flrsPart.Value.Value1 != FZ.FF) {
+						if (SumOutput1 == null)
+							SumOutput1 = 0f;
+						SumOutput1 += util.FuzzyZoneToValue(flrsPart.Value.Value1) * fi11.Value;
+					}
 					if (OutputPlaceNames.size() == 2) {
-						SumOutput2 += util.FuzzyZoneToValue(flrsPart.Value.Value2) * fi21.Value;
+						if (flrsPart.Value.Value2 != FZ.FF) {
+							if (SumOutput2 == null)
+								SumOutput2 = 0f;
+							SumOutput2 += util.FuzzyZoneToValue(flrsPart.Value.Value2) * fi21.Value;
+						}
 					}
 				}
 
 				Integer outputIndex1 = util.GetIndexByName(OutputPlaceNames.get(0), Parent.Parent.PlaceList);
 				DataFuzzy result1 = new DataFuzzy();
-				result1.SetValue(new Fuzzy(SumOutput1));
+				if (SumOutput1 == null) {
+					result1.SetValue(null);
+				} else {
+					result1.SetValue(new Fuzzy(SumOutput1));
+				}
 				result1.SetName(OutputPlaceNames.get(0));
 				Parent.Parent.PlaceList.set(outputIndex1, result1);
 
 				if (OutputPlaceNames.size() == 2) {
 					Integer outputIndex2 = util.GetIndexByName(OutputPlaceNames.get(1), Parent.Parent.PlaceList);
 					DataFuzzy result2 = new DataFuzzy();
-					result2.SetValue(new Fuzzy(SumOutput2));
+					if (SumOutput2 == null) {
+						result2.SetValue(null);
+					} else {
+						result2.SetValue(new Fuzzy(SumOutput2));
+					}
 					result2.SetName(OutputPlaceNames.get(1));
 					Parent.Parent.PlaceList.set(outputIndex2, result2);
 				}
@@ -1093,6 +1113,11 @@ public class Activation implements Serializable {
 				DF1.Value.GenerateFuzzyToken(placeName1.Weight * DF1.Value.Value);
 				DF2.Value.GenerateFuzzyToken(placeName2.Weight * DF2.Value.Value);
 
+				String msg = placeName1.PlaceName + " * Weight (" + placeName1.Weight + ") ------>>>>>>>>>"
+						+ DF1.Value.toString() + placeName2.PlaceName + " * Weight (" + placeName2.Weight
+						+ ") ------>>>>>>>>>" + DF2.Value.toString();
+				this.Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+				System.out.println(msg);
 				ArrayList<FuzzyVectorValue> DF1Values = DF1.Value.Vector.GetNoneZeroValues();
 				ArrayList<FuzzyVectorValue> DF2Values = DF2.Value.Vector.GetNoneZeroValues();
 
@@ -1108,8 +1133,8 @@ public class Activation implements Serializable {
 					}
 				}
 
-				Float SumOutput1 = 0f;
-				Float SumOutput2 = 0f;
+				Float SumOutput1 = null;
+				Float SumOutput2 = null;
 
 				for (FLRSPart flrsPart : TriggeredMapping) {
 
@@ -1123,22 +1148,39 @@ public class Activation implements Serializable {
 					FuzzyVectorValue fi22 = DF2Values.stream().filter((x) -> x.Zone == flrsPart.Input2).findFirst()
 							.orElse(null);
 
-					SumOutput1 += util.FuzzyZoneToValue(flrsPart.Value.Value1) * fi11.Value * fi12.Value;
+					if (flrsPart.Value.Value1 != FZ.FF) {
+						if (SumOutput1 == null)
+							SumOutput1 = 0f;
+						SumOutput1 += util.FuzzyZoneToValue(flrsPart.Value.Value1) * fi11.Value * fi12.Value;
+					}
 					if (OutputPlaceNames.size() == 2) {
-						SumOutput2 += util.FuzzyZoneToValue(flrsPart.Value.Value2) * fi21.Value * fi22.Value;
+						if (flrsPart.Value.Value2 != FZ.FF) {
+							if (SumOutput2 == null)
+								SumOutput2 = 0f;
+							SumOutput2 += util.FuzzyZoneToValue(flrsPart.Value.Value2) * fi21.Value * fi22.Value;
+						}
 					}
 				}
 
 				Integer outputIndex1 = util.GetIndexByName(OutputPlaceNames.get(0), Parent.Parent.PlaceList);
 				DataFuzzy result1 = new DataFuzzy();
-				result1.SetValue(new Fuzzy(SumOutput1));
+				if (SumOutput1 == null) {
+					result1.SetValue(null);
+				} else {
+					result1.SetValue(new Fuzzy(SumOutput1));
+				}
 				result1.SetName(OutputPlaceNames.get(0));
 				Parent.Parent.PlaceList.set(outputIndex1, result1);
 
 				if (OutputPlaceNames.size() == 2) {
 					Integer outputIndex2 = util.GetIndexByName(OutputPlaceNames.get(1), Parent.Parent.PlaceList);
 					DataFuzzy result2 = new DataFuzzy();
-					result2.SetValue(new Fuzzy(SumOutput2));
+
+					if (SumOutput2 == null) {
+						result2.SetValue(null);
+					} else {
+						result2.SetValue(new Fuzzy(SumOutput2));
+					}
 					result2.SetName(OutputPlaceNames.get(1));
 					Parent.Parent.PlaceList.set(outputIndex2, result2);
 				}

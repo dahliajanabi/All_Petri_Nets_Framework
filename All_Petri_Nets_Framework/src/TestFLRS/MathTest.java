@@ -1,4 +1,4 @@
-package Test;
+package TestFLRS;
 
 import java.util.ArrayList;
 import Components.Activation;

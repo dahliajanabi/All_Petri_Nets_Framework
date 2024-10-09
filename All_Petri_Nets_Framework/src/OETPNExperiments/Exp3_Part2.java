@@ -1,4 +1,4 @@
-package OETPN;
+package OETPNExperiments;
 
 import Components.Activation;
 import Components.Condition;

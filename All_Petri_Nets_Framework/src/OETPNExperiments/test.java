@@ -1,4 +1,4 @@
-package OETPN;
+package OETPNExperiments;
 
 import Components.PetriNetWindow;
 import Enumerations.LogicConnector;

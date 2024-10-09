@@ -1,4 +1,4 @@
-package Test;
+package HeatPipe;
 
 import java.util.ArrayList;
 import Components.Activation;
@@ -21,9 +21,10 @@ public class HeatPipe {
 	public static void main(String[] args) {
 
 		FLRS flrs2x1 = new FLRS(new FV(FZ.PL), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NL), new FV(FZ.ZR),
-				new FV(FZ.PL), new FV(FZ.NM), new FV(FZ.PL), new FV(FZ.PL), new FV(FZ.NM), new FV(FZ.NL), new FV(FZ.PL),
-				new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.PL), new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.PM),
-				new FV(FZ.NL), new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.PL));
+								new FV(FZ.PL), new FV(FZ.NM), new FV(FZ.PL), new FV(FZ.PL), new FV(FZ.NM), 
+								new FV(FZ.NL), new FV(FZ.PL), new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.PL), 
+								new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.PM),	new FV(FZ.NL), 
+								new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.PL));
 
 		flrs2x1.Print();
 
@@ -270,11 +271,12 @@ public class HeatPipe {
 		// Start FLETPN -------------------------------------------
 
 		System.out.println("Exp1 started \n ------------------------------");
-		pn.Delay = 3000;
-		// pn.Start();
+		pn.Delay = 0; //tic delay
+		pn.Start(); //to start the consule only
 
-		PetriNetWindow frame = new PetriNetWindow(false);
-		frame.petriNet = pn;
-		frame.setVisible(true);
+//      To start the graphics window--------------
+//		PetriNetWindow frame = new PetriNetWindow(false);
+//		frame.petriNet = pn;
+//		frame.setVisible(true);
 	}
 }

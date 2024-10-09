@@ -1,4 +1,4 @@
-package Test;
+package TestNullFLRS;
 
 import java.util.ArrayList;
 import Components.Activation;
@@ -25,11 +25,11 @@ public class FLRS2X2 {
 	pn.NetworkPort = 1081;
 	
 	FLRS flrs2x2 = new FLRS(new FV(FZ.PL, FZ.PL), new FV(FZ.PM, FZ.NL), new FV(FZ.ZR, FZ.ZR), new FV(FZ.NL, FZ.PL),new FV(FZ.ZR, FZ.PL), 
-			new FV(FZ.PL, FZ.PM), new FV(FZ.NM, FZ.ZR), new FV(FZ.PL, FZ.NM), new FV(FZ.PL, FZ.NM),new FV(FZ.NM, FZ.PL), 
-			new FV(FZ.NL, FZ.PM), new FV(FZ.PL, FZ.NM), new FV(FZ.ZR, FZ.ZR), new FV(FZ.ZR, FZ.NM),new FV(FZ.PL, FZ.ZR), 
-			new FV(FZ.ZR, FZ.PL), new FV(FZ.ZR, FZ.PM), new FV(FZ.NM, FZ.PM), new FV(FZ.PM, FZ.PM),new FV(FZ.NL, FZ.NL),
-			new FV(FZ.ZR, FZ.ZR), new FV(FZ.PM, FZ.NM), new FV(FZ.ZR, FZ.ZR), new FV(FZ.NM, FZ.ZR),new FV(FZ.PL, FZ.NM));
-
+							new FV(FZ.PL, FZ.PM), new FV(FZ.NM, FZ.ZR), new FV(FZ.PL, FZ.FF), new FV(FZ.PL, FZ.NM),new FV(FZ.NM, FZ.PL), 
+							new FV(FZ.NL, FZ.PM), new FV(FZ.PL, FZ.NM), new FV(FZ.FF, FZ.FF), new FV(FZ.FF, FZ.NM),new FV(FZ.PL, FZ.ZR), 
+							new FV(FZ.ZR, FZ.PL), new FV(FZ.ZR, FZ.PM), new FV(FZ.FF, FZ.FF), new FV(FZ.FF, FZ.FF),new FV(FZ.NL, FZ.NL),
+							new FV(FZ.ZR, FZ.ZR), new FV(FZ.PM, FZ.NM), new FV(FZ.ZR, FZ.ZR), new FV(FZ.NM, FZ.ZR),new FV(FZ.PL, FZ.NM));
+//p3 null p4 will have a value
 	flrs2x2.Print();
 	
 	DataFuzzy p1 = new DataFuzzy();
@@ -65,7 +65,7 @@ public class FLRS2X2 {
 
 			ArrayList<PlaceNameWithWeight> input = new ArrayList<>();
 			input.add(new PlaceNameWithWeight("P1", 1F));
-			input.add(new PlaceNameWithWeight("P2", -1F));
+			input.add(new PlaceNameWithWeight("P2", 1F));
 
 			ArrayList<String> twoOutput = new ArrayList<>();
 			twoOutput.add("P3");
