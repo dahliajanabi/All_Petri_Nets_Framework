@@ -34,12 +34,12 @@ public class Inversor {
 	
 	DataFuzzy p1 = new DataFuzzy();
 	p1.SetName("P1");
-	p1.SetValue(new Fuzzy(0.3F));
+	p1.SetValue(new Fuzzy(0.1F));
 	pn.PlaceList.add(p1);
 
 	DataFuzzy p2 = new DataFuzzy();
 	p2.SetName("P2");
-	p2.SetValue(new Fuzzy(0.4F));
+	p2.SetValue(new Fuzzy(0.2F));
 	pn.PlaceList.add(p2);
 
 	DataFuzzy p3 = new DataFuzzy();
