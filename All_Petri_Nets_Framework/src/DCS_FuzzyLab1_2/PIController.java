@@ -21,7 +21,7 @@ import Enumerations.TransitionOperation;
 public class PIController {
 	public static void main (String[]args) {
 	PetriNet pn = new PetriNet();
-	pn.PetriNetName = "Main Petri";
+	pn.PetriNetName = "PI Controller";
 	pn.NetworkPort = 1081;
 	
 	
@@ -295,6 +295,7 @@ public class PIController {
 
 			
 			grdT6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P1"));
+			grdT6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P11"));
 			
 			t6.GuardMappingList.add(grdT6);
 

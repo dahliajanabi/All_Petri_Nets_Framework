@@ -21,7 +21,7 @@ import Enumerations.TransitionOperation;
 public class Comparator {
 	public static void main (String[]args) {
 	PetriNet pn = new PetriNet();
-	pn.PetriNetName = "Main Petri";
+	pn.PetriNetName = "Comparator";
 	pn.NetworkPort = 1081;
 	
 	FLRS differentiator = new FLRS(new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.NL), new FV(FZ.NL),new FV(FZ.NL), 

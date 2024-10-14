@@ -15,12 +15,13 @@ public class Fuzzy implements Cloneable, Serializable {
 
 	public FuzzyVector Vector;
 	public Float Value;
-	
+
 	public Fuzzy(FuzzyVector vector, float value) {
 		this.Vector = vector;
 		this.Value = value;
 		GenerateFuzzyToken(this.Value);
 	}
+
 	public Fuzzy(float value) {
 		this.Vector = new FuzzyVector(0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
 		this.Value = value;
@@ -31,8 +32,8 @@ public class Fuzzy implements Cloneable, Serializable {
 		return "(" + Value.toString() + ": " + Vector.toString() + ")";
 	}
 
-	public void GenerateFuzzyToken(Float v)
-	{
+	public void GenerateFuzzyToken(Float v) {
 		Vector.GenerateFuzzyToken(v);
+		Value = v;
 	}
 }

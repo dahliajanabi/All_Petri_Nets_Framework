@@ -21,7 +21,7 @@ import Enumerations.TransitionOperation;
 public class Inversor {
 	public static void main (String[]args) {
 	PetriNet pn = new PetriNet();
-	pn.PetriNetName = "Main Petri";
+	pn.PetriNetName = "Inversor";
 	pn.NetworkPort = 1081;
 	
 	FLRS flrs2x2 = new FLRS(new FV(FZ.PL, FZ.PL), new FV(FZ.PL, FZ.PM), new FV(FZ.PL, FZ.ZR), new FV(FZ.PL, FZ.NM),new FV(FZ.PL, FZ.NL), 
@@ -34,12 +34,12 @@ public class Inversor {
 	
 	DataFuzzy p1 = new DataFuzzy();
 	p1.SetName("P1");
-	p1.SetValue(new Fuzzy(0.1F));
+	p1.SetValue(new Fuzzy(0.3F));
 	pn.PlaceList.add(p1);
 
 	DataFuzzy p2 = new DataFuzzy();
 	p2.SetName("P2");
-	p2.SetValue(new Fuzzy(0.2F));
+	p2.SetValue(new Fuzzy(0.4F));
 	pn.PlaceList.add(p2);
 
 	DataFuzzy p3 = new DataFuzzy();
@@ -65,7 +65,7 @@ public class Inversor {
 
 			ArrayList<PlaceNameWithWeight> input = new ArrayList<>();
 			input.add(new PlaceNameWithWeight("P1", 1F));
-			input.add(new PlaceNameWithWeight("P2", 1F));
+			input.add(new PlaceNameWithWeight("P2", 2F));
 
 			ArrayList<String> twoOutput = new ArrayList<>();
 			twoOutput.add("P3");

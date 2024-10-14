@@ -44,6 +44,13 @@ public class FuzzyVector implements Serializable {
 	}
 
 	public void GenerateFuzzyToken(Float v) {
+		Values = new ArrayList<FuzzyVectorValue>();
+		Values.add(new FuzzyVectorValue(FZ.NL, 0f));
+		Values.add(new FuzzyVectorValue(FZ.NM, 0f));
+		Values.add(new FuzzyVectorValue(FZ.ZR, 0f));
+		Values.add(new FuzzyVectorValue(FZ.PM, 0f));
+		Values.add(new FuzzyVectorValue(FZ.PL, 0f));
+		
 		if (v == -1F) {
 			FuzzyVectorValue val = Values.stream().filter((x) -> x.Zone == FZ.NL).findFirst().orElse(null);
 
