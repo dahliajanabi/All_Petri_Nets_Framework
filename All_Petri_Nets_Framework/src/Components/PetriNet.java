@@ -1,13 +1,15 @@
 package Components;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-
+import DataObjects.DataFuzzy;
 import DataObjects.DataSubPetriNet;
+import DataOnly.Fuzzy;
 import DataOnly.SubPetri;
 import Enumerations.PetriNetState;
 import Enumerations.PetriObjectType;
@@ -15,11 +17,27 @@ import Interfaces.PetriObject;
 import PetriDataPackage.PetriData;
 import Utilities.DataOverNetwork;
 import Utilities.Functions;
+import Utilities.LineChart;
+import Utilities.SimpleChart;
+import Utilities.Text;
 import MetricsClasses.Metrics;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable {
 
 	public Metrics Metrics = new Metrics();
+	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+	public void ShowChart() {
+//		SimpleChart.dataset = dataset;
+//		SimpleChart s = new SimpleChart();
+
+		LineChart.dataset = dataset;
+		LineChart petrichart = new LineChart(this.PetriNetName);
+		petrichart.pack();
+		petrichart.setVisible(true);
+		petrichart.setExtendedState(petrichart.getExtendedState() | petrichart.MAXIMIZED_BOTH);
+	}
 
 	public String PrintMatrics() {
 		util.ComputeMatrics(this);
@@ -99,6 +117,18 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		ConstantPlaceList = new ArrayList<PetriObject>();
 	}
 
+	public ArrayList<String> InputStrings = new ArrayList<>();
+
+	public void SetInputFile(String InputFilePath) throws FileNotFoundException {
+		if (InputFilePath != "") {
+			Utilities.Text InputText = new Text(InputFilePath);
+
+			while (InputText.hasLine) {
+				InputStrings.add(InputText.nexline());
+			}
+		}
+	}
+
 	public ArrayList<PetriTransition> Transitions;
 
 	public String PetriNetName;
@@ -111,6 +141,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 	private Thread networkThread;
 
 	public String msg;
+	int fileInputIndex = -1;
 
 	@Override
 	public void Start() {
@@ -128,6 +159,10 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		ExecutionList = new ArrayList<PetriTransition>();
 		StopFlag = false;
 		PauseFlag = false;
+
+		if (InputStrings.size() >= 1) {
+			fileInputIndex = 0;
+		}
 		while (!StopFlag) {
 			try {
 				Thread.sleep(Delay);
@@ -139,6 +174,28 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 				continue;
 			}
 
+			if (fileInputIndex > -1 && fileInputIndex < InputStrings.size()) {
+
+				String inputLine = InputStrings.get(fileInputIndex);
+				fileInputIndex++;
+				if (inputLine != null) {
+					String[] InputPlacesFromText = inputLine.split(",");
+					for (String InputPlaceFromText : InputPlacesFromText) {
+						String[] InputPlacesFromTextElements = InputPlaceFromText.split(":");
+						String InputPlacesFromTextElementsPlaceName = InputPlacesFromTextElements[0];
+						String InputPlacesFromTextElementsPlaceValue = InputPlacesFromTextElements[1];
+						PetriObject InputPlacesFromTextElementsPlaceObject = util
+								.GetFromListByName(InputPlacesFromTextElementsPlaceName, PlaceList);
+						if (InputPlacesFromTextElementsPlaceObject instanceof DataFuzzy) {
+							InputPlacesFromTextElementsPlaceObject
+									.SetValue(new Fuzzy(Float.valueOf(InputPlacesFromTextElementsPlaceValue)));
+						}
+					}
+				} else {
+					ShowChart();
+					StopFlag = true;
+				}
+			}
 			PrintPetri();
 			String conditionsStatus = "";
 			for (int i = 0; i < Transitions.size(); ++i) {
@@ -206,8 +263,15 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		for (PetriObject petriObject : PlaceList) {
 			if (petriObject == null)
 				temp1.add("NULL");
-			else if (petriObject.IsPrintable())
+			else if (petriObject.IsPrintable()) {
 				temp1.add(petriObject.toString());
+			}
+
+			if (petriObject instanceof DataFuzzy) {
+				if (((DataFuzzy) petriObject).Value != null)
+					dataset.addValue(((DataFuzzy) petriObject).Value.Value, petriObject.GetName(),
+							String.valueOf(fileInputIndex));
+			}
 		}
 
 		msg = name + " PlaceList [" + String.join("  ", temp1) + "]";

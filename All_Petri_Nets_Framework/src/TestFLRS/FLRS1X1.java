@@ -1,5 +1,6 @@
 package TestFLRS;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import Components.Activation;
 import Components.Condition;
@@ -20,7 +21,7 @@ import Enumerations.TransitionOperation;
 
 public class FLRS1X1 {
 	
-	public static void main (String [] args) {
+	public static void main (String [] args) throws FileNotFoundException {
 		
 		FLRS flrs1x1 = new FLRS(new FV(FZ.PL), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NL),new FV(FZ.ZR));
 
@@ -30,9 +31,10 @@ public class FLRS1X1 {
 		pn.PetriNetName = "Main Petri";
 		pn.NetworkPort = 1081;
 
+		pn.SetInputFile("D:\\PetriInputData\\test3.txt");
 		DataFuzzy p1 = new DataFuzzy();
 		p1.SetName("P1");
-		p1.SetValue(new Fuzzy(0.1F));
+		//p1.SetValue(new Fuzzy(0.1F));
 		pn.PlaceList.add(p1);
 
 		DataFuzzy p2 = new DataFuzzy();

@@ -1,5 +1,6 @@
 package DCS_FuzzyLab1_2;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import Components.Activation;
 import Components.Condition;
@@ -19,7 +20,7 @@ import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
 public class PIController {
-	public static void main (String[]args) {
+	public static void main (String[]args) throws FileNotFoundException {
 	PetriNet pn = new PetriNet();
 	pn.PetriNetName = "PI Controller";
 	pn.NetworkPort = 1081;
@@ -57,14 +58,19 @@ public class PIController {
 						  new FV(FZ.NM), new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.PL), new FV(FZ.PL),
 						  new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.PL), new FV(FZ.PL), new FV(FZ.PL));
 	
+	FLRS OneXOneDefaultTable = new FLRS(new FV(FZ.NL), new FV(FZ.NM), new FV(FZ.ZR), new FV(FZ.PM),new FV(FZ.PL));
 	
-	
+	FLRS OneXTwoDefaultTable = new FLRS(new FV(FZ.NL,FZ.NL), new FV(FZ.NM,FZ.NM), new FV(FZ.ZR,FZ.ZR), new FV(FZ.PM,FZ.PM),new FV(FZ.PL,FZ.PL));
 
 	reader.Print();
 	doubleChannelAdder.Print();
 	doubleChannelDifferentiator.Print();
 	doubleChannelDifferentiator2.Print();
 	adder.Print();
+	OneXOneDefaultTable.Print();
+	OneXTwoDefaultTable.Print();
+	
+	pn.SetInputFile("D:\\PetriInputData\\PIController.txt");
 	
 	DataFuzzy p0 = new DataFuzzy();
 	p0.SetName("P0");
@@ -130,9 +136,15 @@ public class PIController {
 
 				GuardMapping grdT0 = new GuardMapping();
 				grdT0.condition = T0Ct1;
+				
+				ArrayList<PlaceNameWithWeight> input0 = new ArrayList<>();
+				input0.add(new PlaceNameWithWeight("P0", 1F));
+
+				ArrayList<String> Output0 = new ArrayList<>();
+				Output0.add("P1");
 
 
-				grdT0.Activations.add(new Activation(t0, "P0", TransitionOperation.Move, "P1"));
+				grdT0.Activations.add(new Activation(t0, OneXOneDefaultTable, input0, TransitionOperation.FLRS, Output0));
 				
 				t0.GuardMappingList.add(grdT0);
 
@@ -242,8 +254,14 @@ public class PIController {
 			GuardMapping grdT4 = new GuardMapping();
 			grdT4.condition = T4Ct1;
 
-			
-			grdT4.Activations.add(new Activation(t4, "P6", TransitionOperation.Move, "P7"));
+			ArrayList<PlaceNameWithWeight> input4 = new ArrayList<>();
+			input4.add(new PlaceNameWithWeight("P6", 1F));
+
+			ArrayList<String> Output4 = new ArrayList<>();
+			Output4.add("P7");
+
+
+			grdT4.Activations.add(new Activation(t4, OneXOneDefaultTable, input4, TransitionOperation.FLRS, Output4));
 			
 			t4.GuardMappingList.add(grdT4);
 
@@ -288,14 +306,20 @@ public class PIController {
 			t6.TransitionName = "T6";
 			t6.InputPlaceName.add("P10");
 
-			Condition T6Ct1 = new Condition(t4, "P10", TransitionCondition.NotNull);
+			Condition T6Ct1 = new Condition(t6, "P10", TransitionCondition.NotNull);
 
 			GuardMapping grdT6 = new GuardMapping();
 			grdT6.condition = T6Ct1;
 
-			
-			grdT6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P1"));
-			grdT6.Activations.add(new Activation(t6, "P10", TransitionOperation.Move, "P11"));
+			ArrayList<PlaceNameWithWeight> input6 = new ArrayList<>();
+			input6.add(new PlaceNameWithWeight("P10", 1F));
+
+			ArrayList<String> Output6 = new ArrayList<>();
+			Output6.add("P1");
+			Output6.add("P11");
+
+
+			grdT6.Activations.add(new Activation(t6, OneXTwoDefaultTable, input6, TransitionOperation.FLRS, Output6));
 			
 			t6.GuardMappingList.add(grdT6);
 
@@ -309,7 +333,7 @@ public class PIController {
 			// pn.Transitions.add(t3);
 
 			System.out.println("Exp1 started \n ------------------------------");
-			pn.Delay = 3000;
+			pn.Delay = 0;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

@@ -1,5 +1,6 @@
 package DCS_FuzzyLab1_2;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import Components.Activation;
 import Components.Condition;
@@ -19,7 +20,7 @@ import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
 public class Comparator {
-	public static void main (String[]args) {
+	public static void main (String[]args) throws FileNotFoundException {
 	PetriNet pn = new PetriNet();
 	pn.PetriNetName = "Comparator";
 	pn.NetworkPort = 1081;
@@ -34,6 +35,8 @@ public class Comparator {
 
 	differentiator.Print();
 	separator.Print();
+	
+	pn.SetInputFile("D:\\PetriInputData\\comparator.txt");
 	
 	DataFuzzy p0 = new DataFuzzy();
 	p0.SetName("P0");
@@ -118,7 +121,7 @@ public class Comparator {
 			// pn.Transitions.add(t3);
 
 			System.out.println("Exp1 started \n ------------------------------");
-			pn.Delay = 3000;
+			pn.Delay = 0;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);
