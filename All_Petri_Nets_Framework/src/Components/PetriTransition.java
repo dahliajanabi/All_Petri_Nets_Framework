@@ -81,7 +81,7 @@ public class PetriTransition implements PetriObject, Serializable {
 
 	public int Delay = 0;
 	public int InitialDelay = 0;
-
+	public boolean IsAsync = false;
 	public ArrayList<PetriObject> TempMarking;
 
 	public ArrayList<String> InputPlaceName;

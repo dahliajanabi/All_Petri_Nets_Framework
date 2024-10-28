@@ -154,7 +154,7 @@ public class Controller {
 
 		
 		
-		System.out.println("Exp1 started \n ------------------------------");
+		System.out.println("Controller started \n ------------------------------");
 		pn.Delay = 3000;
 		// pn.Start();
 

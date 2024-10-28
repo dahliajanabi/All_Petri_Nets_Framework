@@ -3,6 +3,7 @@ package Components;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import DataObjects.DataBoolean;
 import DataObjects.DataCar;
 import DataObjects.DataCarQueue;
 import DataOnly.CarQueue;
@@ -201,6 +202,10 @@ public class Activation implements Serializable {
 
 		if (temp instanceof DataInteger) {
 			result = (PetriObject) ((DataInteger) temp).clone();
+		}
+		
+		if (temp instanceof DataBoolean) {
+			result.SetValue((PetriObject) ((DataBoolean) temp).clone());
 		}
 
 		if (temp instanceof DataString) {
@@ -625,6 +630,14 @@ public class Activation implements Serializable {
 		if (temp instanceof DataString) {
 			result.SetValue((PetriObject) ((DataString) temp).clone());
 		}
+		
+		if (temp instanceof DataBoolean) {
+			result.SetValue((PetriObject) ((DataBoolean) temp).clone());
+		}
+		
+		if (temp instanceof DataFloatFloat) {
+			result.SetValue((PetriObject) ((DataFloatFloat) temp).clone());
+		}
 
 		if (temp instanceof DataCar) {
 			result.SetValue((PetriObject) ((DataCar) temp).clone());
@@ -632,6 +645,10 @@ public class Activation implements Serializable {
 
 		if (temp instanceof DataSubPetriNet) {
 			result.SetValue((PetriObject) ((DataSubPetriNet) temp).clone());
+		}
+		
+		if (temp instanceof DataFuzzy) {
+			result.SetValue((PetriObject) ((DataFuzzy) temp).clone());
 		}
 
 	}

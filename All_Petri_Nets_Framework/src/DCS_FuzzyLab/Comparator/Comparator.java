@@ -1,4 +1,4 @@
-package DCS_FuzzyLab1_2;
+package DCS_FuzzyLab.Comparator;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public class Comparator {
 			// PetriTransition t3 = new PetriTransition(pn);
 			// pn.Transitions.add(t3);
 
-			System.out.println("Exp1 started \n ------------------------------");
+			System.out.println("Comparator started \n ------------------------------");
 			pn.Delay = 0;
 			// pn.Start();
 

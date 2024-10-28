@@ -1,4 +1,4 @@
-package DCS_FuzzyLab1_2;
+package DCS_FuzzyLab.OETPN_C;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,13 +17,14 @@ public class PIControllerInput {
 		d = 0.3f;
 		command = 0.55f;
 		x = 0.0f;
-		for (float i = 0; i < 200; i++) {
-			if (i > 100)
+		for (float i = 0; i < 50; i++) {
+			if (i > 25)
 				command = 0.35f;
-			xNew = a * x + b * command;
-			currentStatus = c * x + d * command;
-			x = xNew;
-			fw.write("P2:" + currentStatus + "F" + "," + "P4:" + command + "F\n");
+//			xNew = a * x + b * command;
+//			currentStatus = c * x + d * command;
+//			x = xNew;
+//			fw.write("P2:" + currentStatus + "F" + "," + "P4:" + command + "F\n"); //For testing the PI controller alone
+			fw.write("r:" + command + "F\n");
 		}
 		fw.close();
 		System.out.println("Done!");

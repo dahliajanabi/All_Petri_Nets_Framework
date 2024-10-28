@@ -1,4 +1,4 @@
-package TestFLRS;
+package TestFuzzy.TestFLRS;
 
 import java.io.File;
 import java.io.FileWriter;

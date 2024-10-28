@@ -1,4 +1,4 @@
-package DCS_FuzzyLab1_2;
+package DCS_FuzzyLab.Comparator;
 
 import java.io.File;
 import java.io.FileWriter;

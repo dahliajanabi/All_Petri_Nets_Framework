@@ -270,7 +270,7 @@ public class HeatPipe {
 
 		// Start FLETPN -------------------------------------------
 
-		System.out.println("Exp1 started \n ------------------------------");
+		System.out.println("Heat Pipe started \n ------------------------------");
 		pn.Delay = 0; //tic delay
 		pn.Start(); //to start the consule only
 

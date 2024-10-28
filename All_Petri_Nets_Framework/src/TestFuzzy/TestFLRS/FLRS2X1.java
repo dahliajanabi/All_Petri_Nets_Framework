@@ -1,4 +1,4 @@
-package TestFLRS;
+package TestFuzzy.TestFLRS;
 
 import java.util.ArrayList;
 import Components.Activation;
@@ -18,13 +18,16 @@ import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
-public class FLRS1X2 {
+public class FLRS2X1 {
 	public static void main (String []args) {
 		
-		FLRS flrs1x2 = new FLRS(new FV(FZ.PL,FZ.NL), new FV(FZ.PM,FZ.NM), new FV(FZ.ZR,FZ.ZR), new FV(FZ.NL,FZ.PM),new FV(FZ.ZR,FZ.PL));
-					
+		FLRS flrs2x1 = new FLRS(new FV(FZ.PL), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NL),new FV(FZ.ZR), 
+	   			new FV(FZ.PL), new FV(FZ.NM), new FV(FZ.PL), new FV(FZ.PL), new FV(FZ.NM), 
+	   			new FV(FZ.NL), new FV(FZ.PL), new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.PL), 
+	   			new FV(FZ.ZR), new FV(FZ.ZR), new FV(FZ.NM), new FV(FZ.PM), new FV(FZ.NL),
+	   			new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.ZR), new FV(FZ.NM),	new FV(FZ.PL));
 
-		flrs1x2.Print();
+		flrs2x1.Print();
 		
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "Main Petri";
@@ -37,6 +40,7 @@ public class FLRS1X2 {
 
 		DataFuzzy p2 = new DataFuzzy();
 		p2.SetName("P2");
+		p2.SetValue(new Fuzzy(0.2F));
 		pn.PlaceList.add(p2);
 
 		DataFuzzy p3 = new DataFuzzy();
@@ -47,22 +51,25 @@ public class FLRS1X2 {
 				PetriTransition t1 = new PetriTransition(pn);
 				t1.TransitionName = "T1";
 				t1.InputPlaceName.add("P1");
+				t1.InputPlaceName.add("P2");
 
 				Condition T1Ct1 = new Condition(t1, "P1", TransitionCondition.NotNull);
+				Condition T1Ct2 = new Condition(t1, "P2", TransitionCondition.NotNull);
+				T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
 				GuardMapping grdT1 = new GuardMapping();
 				grdT1.condition = T1Ct1;
 
 				ArrayList<PlaceNameWithWeight> input = new ArrayList<>();
 				input.add(new PlaceNameWithWeight("P1", 1F));
+				input.add(new PlaceNameWithWeight("P2", -1F));
 
 				
 				ArrayList<String> Output = new ArrayList<>();
-				Output.add("P2");
 				Output.add("P3");
 
 				
-				grdT1.Activations.add(new Activation(t1, flrs1x2, input, TransitionOperation.FLRS, Output));
+				grdT1.Activations.add(new Activation(t1, flrs2x1, input, TransitionOperation.FLRS, Output));
 				
 				t1.GuardMappingList.add(grdT1);
 
@@ -78,7 +85,6 @@ public class FLRS1X2 {
 				PetriNetWindow frame = new PetriNetWindow(false);
 				frame.petriNet = pn;
 				frame.setVisible(true);
-		
 	}
 
 }

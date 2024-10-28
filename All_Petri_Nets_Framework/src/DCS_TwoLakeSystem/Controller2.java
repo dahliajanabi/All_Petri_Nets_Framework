@@ -228,7 +228,7 @@ public class Controller2 {
 
 		// -------Run OER-TPN
 
-		System.out.println("Exp1 started \n ------------------------------");
+		System.out.println("Controller 2 started \n ------------------------------");
 
 		pn.Delay = 2000;
 

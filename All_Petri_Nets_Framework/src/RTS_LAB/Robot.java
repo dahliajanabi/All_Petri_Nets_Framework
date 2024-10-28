@@ -73,7 +73,7 @@ public class Robot {
 		t_2.Delay = 5;
 		pn.Transitions.add(t_2);
 
-		System.out.println("Exp1 started \n ------------------------------");
+		System.out.println("Robot started \n ------------------------------");
 		pn.Delay = 3000;
 		// pn.Start();
 

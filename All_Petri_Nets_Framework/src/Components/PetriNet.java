@@ -7,7 +7,10 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+
+import DataObjects.DataFloat;
 import DataObjects.DataFuzzy;
+import DataObjects.DataInteger;
 import DataObjects.DataSubPetriNet;
 import DataOnly.Fuzzy;
 import DataOnly.SubPetri;
@@ -18,7 +21,6 @@ import PetriDataPackage.PetriData;
 import Utilities.DataOverNetwork;
 import Utilities.Functions;
 import Utilities.LineChart;
-import Utilities.SimpleChart;
 import Utilities.Text;
 import MetricsClasses.Metrics;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -139,6 +141,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 	public ArrayList<PetriTransition> ExecutionList;
 
 	private Thread networkThread;
+	private ArrayList<Thread> AsyncTransitionThreads;
 
 	public String msg;
 	int fileInputIndex = -1;
@@ -155,6 +158,18 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		msg = "####################  " + PetriNetName + " Started  #####################";
 		System.out.println(msg);
 		m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+
+		AsyncTransitionThreads = new ArrayList<Thread>();
+		for (int i = 0; i < Transitions.size(); ++i) {
+			if (Transitions.get(i).IsAsync) {
+				Thread tThread = new Thread();
+
+				AsyncTransitionRunnableThread tRunnable = new AsyncTransitionRunnableThread(this, Transitions.get(i));
+				tThread = new Thread(tRunnable);
+				tThread.start();
+				AsyncTransitionThreads.add(tThread);
+			}
+		}
 
 		ExecutionList = new ArrayList<PetriTransition>();
 		StopFlag = false;
@@ -192,13 +207,15 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 						}
 					}
 				} else {
-					ShowChart();
+					// ShowChart();
 					StopFlag = true;
 				}
 			}
 			PrintPetri();
 			String conditionsStatus = "";
 			for (int i = 0; i < Transitions.size(); ++i) {
+				if (Transitions.get(i).IsAsync)
+					continue;
 				if (!util.TransitionExist(Transitions.get(i).GetName(), ExecutionList)) {
 					if (Transitions.get(i).CheckConditions()) {
 						try {
@@ -267,10 +284,42 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 				temp1.add(petriObject.toString());
 			}
 
-			if (petriObject instanceof DataFuzzy) {
-				if (((DataFuzzy) petriObject).Value != null)
-					dataset.addValue(((DataFuzzy) petriObject).Value.Value, petriObject.GetName(),
-							String.valueOf(fileInputIndex));
+			if (fileInputIndex > -1) {
+				if (petriObject instanceof DataFuzzy) {
+					if (((DataFuzzy) petriObject).Value != null)
+						dataset.addValue(((DataFuzzy) petriObject).Value.Value, petriObject.GetName(),
+								String.valueOf(fileInputIndex));
+				}
+				
+				if (petriObject instanceof DataInteger) {
+					if (((DataInteger) petriObject).Value != null)
+						dataset.addValue(((DataInteger) petriObject).Value, petriObject.GetName(),
+								String.valueOf(fileInputIndex));
+				}
+				
+				if (petriObject instanceof DataFloat) {
+					if (((DataFloat) petriObject).Value != null)
+						dataset.addValue(((DataFloat) petriObject).Value, petriObject.GetName(),
+								String.valueOf(fileInputIndex));
+				}
+			} else {
+				if (petriObject instanceof DataFuzzy) {
+					if (((DataFuzzy) petriObject).Value != null)
+						dataset.addValue(((DataFuzzy) petriObject).Value.Value, petriObject.GetName(),
+								String.valueOf(dataset.getRowCount()));
+				}
+				
+				if (petriObject instanceof DataInteger) {
+					if (((DataInteger) petriObject).Value != null)
+						dataset.addValue(((DataInteger) petriObject).Value, petriObject.GetName(),
+								String.valueOf(dataset.getRowCount()));
+				}
+				
+				if (petriObject instanceof DataFloat) {
+					if (((DataFloat) petriObject).Value != null)
+						dataset.addValue(((DataFloat) petriObject).Value, petriObject.GetName(),
+								String.valueOf(dataset.getRowCount()));
+				}
 			}
 		}
 
@@ -279,7 +328,9 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		System.out.println(msg);
 
 		temp1 = new ArrayList<String>();
-		for (PetriObject petriObject : ConstantPlaceList) {
+		for (
+
+		PetriObject petriObject : ConstantPlaceList) {
 			if (petriObject == null)
 				temp1.add("NULL");
 			else if (petriObject.IsPrintable())
@@ -368,6 +419,41 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		}
 	}
 
+	public class AsyncTransitionRunnableThread implements Runnable {
+		private PetriNet net;
+		private PetriTransition transition;
+
+		public AsyncTransitionRunnableThread(PetriNet net, PetriTransition t) {
+			this.net = net;
+			this.transition = t;
+		}
+
+		public void run() {
+			msg = "ASYNC Transition have been started " + transition.TransitionName;
+			System.out.println(msg);
+			m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+
+			while (!StopFlag) {
+				try {
+					Thread.sleep(transition.Delay);
+				} catch (InterruptedException ex) {
+					Thread.currentThread().interrupt();
+				}
+				if (transition.CheckConditions()) {
+					try {
+						transition.BookTokens();
+						transition.Activate();
+					} catch (CloneNotSupportedException e) {
+						msg = e.getMessage();
+						m_lDataLoadFinished.onDataLoadFinishedListener(msg);
+						e.printStackTrace();
+						System.out.print(msg);
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	public void run() {
 		if (NonBooking) {
@@ -425,6 +511,8 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 			PrintPetri();
 			String conditionsStatus = "";
 			for (int i = 0; i < Transitions.size(); ++i) {
+				if (Transitions.get(i).IsAsync)
+					continue;
 				if (!util.TransitionExist(Transitions.get(i).GetName(), ExecutionList)) {
 					if (Transitions.get(i).CheckConditions()) {
 

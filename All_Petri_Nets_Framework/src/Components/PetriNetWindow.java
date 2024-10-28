@@ -37,6 +37,7 @@ import Utilities.Functions;
 
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import javax.swing.JSplitPane;
 
 public class PetriNetWindow extends JFrame {
 
@@ -47,11 +48,14 @@ public class PetriNetWindow extends JFrame {
 	public PetriNet petriNet = null;
 	Thread networkThread;
 	boolean AutoStart = false;
+	JPanel pnlGraphics = new JPanel();
+	JScrollPane scrollPane = new JScrollPane();
+	DefaultListModel<String> model = new DefaultListModel<String>();
 
+	JList<String> lstMsg = new JList<String>(model);
 	public PetriNetWindow(boolean autoStart) {
 		setBounds(100, 100, 805, 700);
 		this.AutoStart = autoStart;
-		JPanel pnlGraphics = new JPanel();
 
 		JComboBox<String> cbGraphFilter = new JComboBox<String>();
 		cbGraphFilter.addActionListener(new ActionListener() {
@@ -59,20 +63,12 @@ public class PetriNetWindow extends JFrame {
 				drawOETPN(pnlGraphics, cbGraphFilter);
 			}
 		});
-		pnlGraphics.setBackground(Color.white);
 
 		JTextPane txtName = new JTextPane();
 		txtName.setFont(new Font("Consolas", Font.BOLD, 12));
 
 		MyCellRenderer cellRenderer = new MyCellRenderer(800);
-		DefaultListModel<String> model = new DefaultListModel<String>();
-		JList<String> lstMsg = new JList<String>(model);
-		lstMsg.setCellRenderer(cellRenderer);
-		lstMsg.setFont(new Font("Consolas", Font.BOLD, 12));
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(lstMsg);
-
+	
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,51 +137,77 @@ public class PetriNetWindow extends JFrame {
 				}
 			}
 		});
+		
+		JSplitPane splitPane = new JSplitPane();
+		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		
+		JButton btnShowGraph = new JButton("Show Graph");
+		btnShowGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//drawgraph here
+				petriNet.ShowChart();
+//				petriNet.PauseFlag = true;
+//				addString(model, scrollPane, "Paused....", lstMsg);
+//				drawOETPN(pnlGraphics, cbGraphFilter);
+			}
+		});
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(pnlGraphics,
-								GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup().addGap(10).addGroup(groupLayout
-								.createParallelGroup(Alignment.LEADING)
-								.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(10)
-										.addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18)
-										.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(txtMetrices, GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 385,
-												GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSaveLog).addGap(18)
-										.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283,
-												GroupLayout.PREFERRED_SIZE)))))
-				.addContainerGap()));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addGap(11)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnStart)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(btnPause)
-										.addComponent(btnMetrics))
-								.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(11)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(btnSaveLog)
-										.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addGap(12)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(pnlGraphics, GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE).addGap(10)));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(10)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(splitPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnShowGraph)
+							.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+							.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 385, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnSaveLog)
+							.addGap(18)
+							.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(11)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnStart)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnPause)
+							.addComponent(btnMetrics)
+							.addComponent(btnShowGraph))
+						.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(11)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnSaveLog)
+							.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+					.addContainerGap())
+		);
+	
+		splitPane.setRightComponent(pnlGraphics);
+		pnlGraphics.setBackground(Color.white);
+		
+		
+				splitPane.setLeftComponent(scrollPane);
+			
+				scrollPane.setViewportView(lstMsg);
+				lstMsg.setCellRenderer(cellRenderer);
+				lstMsg.setFont(new Font("Consolas", Font.BOLD, 12));
 		getContentPane().setLayout(groupLayout);
 
 		this.addWindowListener(new java.awt.event.WindowAdapter() {

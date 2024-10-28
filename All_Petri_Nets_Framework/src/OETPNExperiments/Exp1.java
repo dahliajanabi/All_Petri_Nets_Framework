@@ -164,6 +164,7 @@ public class Exp1 {
 		// T1 ------------------------------------------------
 		PetriTransition t1 = new PetriTransition(pn);
 		t1.TransitionName = "t1";
+		//t1.IsAsync = true;
 		t1.InputPlaceName.add("p1");
 		t1.InputPlaceName.add("p4");
 		

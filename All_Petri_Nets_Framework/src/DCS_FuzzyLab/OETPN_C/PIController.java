@@ -1,4 +1,4 @@
-package DCS_FuzzyLab1_2;
+package DCS_FuzzyLab.OETPN_C;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,16 +9,18 @@ import Components.PetriNet;
 import Components.PetriNetWindow;
 import Components.PetriTransition;
 import DataObjects.DataFuzzy;
+import DataObjects.DataTransfer;
 import DataOnly.FLRS;
 import DataOnly.FV;
 import DataOnly.Fuzzy;
 import DataOnly.FuzzyVector;
 import DataOnly.PlaceNameWithWeight;
+import DataOnly.TransferOperation;
 import Enumerations.FZ;
 import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
-
+// Cc1 The controller:
 public class PIController {
 	public static void main (String[]args) throws FileNotFoundException {
 	PetriNet pn = new PetriNet();
@@ -70,7 +72,6 @@ public class PIController {
 	OneXOneDefaultTable.Print();
 	OneXTwoDefaultTable.Print();
 	
-	pn.SetInputFile("D:\\PetriInputData\\PIController.txt");
 	
 	DataFuzzy p0 = new DataFuzzy();
 	p0.SetName("P0");
@@ -83,7 +84,7 @@ public class PIController {
 
 	DataFuzzy p2 = new DataFuzzy();
 	p2.SetName("P2");
-	p2.SetValue(new Fuzzy(0.3F));//test
+	p2.SetValue(new Fuzzy(0.0F));
 	pn.PlaceList.add(p2);
 
 	DataFuzzy p3 = new DataFuzzy();
@@ -92,7 +93,7 @@ public class PIController {
 
 	DataFuzzy p4 = new DataFuzzy();
 	p4.SetName("P4");
-	p4.SetValue(new Fuzzy(0.4F));//test
+	//p4.SetValue(new Fuzzy(0.55F));
 	pn.PlaceList.add(p4);
 	
 	DataFuzzy p5 = new DataFuzzy();
@@ -124,6 +125,11 @@ public class PIController {
 	p11.SetName("P11");
 	p11.SetValue(new Fuzzy(0.0F));
 	pn.PlaceList.add(p11);
+	
+	DataTransfer p_o_1 = new DataTransfer();
+	p_o_1.SetName("c");
+	p_o_1.Value = new TransferOperation("localhost", "1080", "Cc_1_c"); //to OETPN
+	pn.PlaceList.add(p_o_1);
 	
 	
 	// T0 ------------------------------------------------
@@ -326,13 +332,29 @@ public class PIController {
 			t6.Delay = 1;
 			pn.Transitions.add(t6);
 			
+// T6 ------------------------------------------------
+			PetriTransition t7 = new PetriTransition(pn);
+			t7.TransitionName = "T7";
+			t7.InputPlaceName.add("P9");
+
+			Condition T7Ct1 = new Condition(t6, "P9", TransitionCondition.NotNull);
+
+			GuardMapping grdT7 = new GuardMapping();
+			grdT7.condition = T7Ct1;
+
+			grdT7.Activations.add(new Activation(t7, "P9", TransitionOperation.SendOverNetwork, "c"));
+			
+			t7.GuardMappingList.add(grdT7);
+
+			t7.Delay = 0;
+			pn.Transitions.add(t7);			
 
 			// -------------------------------------------
 
 			// PetriTransition t3 = new PetriTransition(pn);
 			// pn.Transitions.add(t3);
 
-			System.out.println("Exp1 started \n ------------------------------");
+			System.out.println("PIController started \n ------------------------------");
 			pn.Delay = 0;
 			// pn.Start();
 

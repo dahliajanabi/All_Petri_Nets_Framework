@@ -1,4 +1,4 @@
-package TestNullFLRS;
+package TestFuzzy.TestNullFLRS;
 
 import java.util.ArrayList;
 import Components.Activation;
