@@ -17,6 +17,7 @@ import javax.swing.JTextPane;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -51,10 +52,13 @@ public class PetriNetWindow extends JFrame {
 	JPanel pnlGraphics = new JPanel();
 	JScrollPane scrollPane = new JScrollPane();
 	DefaultListModel<String> model = new DefaultListModel<String>();
-
 	JList<String> lstMsg = new JList<String>(model);
+
+	JPanel SelectionPanel = new JPanel();
+	// JList PlaceSelectlist = new JList();
+
 	public PetriNetWindow(boolean autoStart) {
-		setBounds(100, 100, 805, 700);
+		setBounds(100, 100, 909, 700);
 		this.AutoStart = autoStart;
 
 		JComboBox<String> cbGraphFilter = new JComboBox<String>();
@@ -68,7 +72,7 @@ public class PetriNetWindow extends JFrame {
 		txtName.setFont(new Font("Consolas", Font.BOLD, 12));
 
 		MyCellRenderer cellRenderer = new MyCellRenderer(800);
-	
+
 		JButton btnStart = new JButton("Start");
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -85,6 +89,10 @@ public class PetriNetWindow extends JFrame {
 					cbGraphFilter.setSelectedIndex(1);
 				}
 
+				for (PetriObject p : petriNet.PlaceList) {
+					SelectionPanel.add(new Checkbox(p.GetName(), false));
+				}
+				
 				if (!petriNet.PauseFlag) {
 					networkThread = new Thread(petriNet);
 					networkThread.start();
@@ -137,44 +145,39 @@ public class PetriNetWindow extends JFrame {
 				}
 			}
 		});
-		
+
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-		
-		JButton btnShowGraph = new JButton("Show Graph");
-		btnShowGraph.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//drawgraph here
-				petriNet.ShowChart();
-//				petriNet.PauseFlag = true;
-//				addString(model, scrollPane, "Paused....", lstMsg);
-//				drawOETPN(pnlGraphics, cbGraphFilter);
-			}
-		});
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(10)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(splitPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap()
+							.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(SelectionPanel, GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(10)
-							.addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+									.addGap(10)
+									.addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+								.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 385, GroupLayout.PREFERRED_SIZE))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnShowGraph)
-							.addPreferredGap(ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
-							.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 385, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSaveLog)
-							.addGap(18)
-							.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnSaveLog)
+									.addGap(18)
+									.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE))
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)))))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -183,10 +186,8 @@ public class PetriNetWindow extends JFrame {
 					.addGap(11)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(btnStart)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnPause)
-							.addComponent(btnMetrics)
-							.addComponent(btnShowGraph))
+						.addComponent(btnPause)
+						.addComponent(btnMetrics)
 						.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(11)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
@@ -194,20 +195,44 @@ public class PetriNetWindow extends JFrame {
 						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 							.addComponent(btnSaveLog)
 							.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(SelectionPanel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
-					.addContainerGap())
+					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+					.addGap(8))
 		);
-	
+
+//		JList<? extends E> placeSelectionList = new JList();
+//		panel.add(list);
+//		PlaceSelectlist.setCellRenderer(new CheckboxListCellRenderer());
+//		SelectionPanel.add(PlaceSelectlist);
+		SelectionPanel.setBackground(Color.LIGHT_GRAY);
+		
+				JButton btnShowGraph = new JButton("Show Graph");
+				SelectionPanel.add(btnShowGraph);
+				btnShowGraph.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						ArrayList<String> filter = new ArrayList<String>();
+						for (Component c : SelectionPanel.getComponents()) {
+							if (c instanceof Checkbox) {
+								Checkbox cc = ((Checkbox) c);
+								if (cc.getState()) {
+									filter.add(cc.getLabel());
+								}
+							}
+						}
+						petriNet.ShowChart(filter);
+					}
+				});
+
 		splitPane.setRightComponent(pnlGraphics);
 		pnlGraphics.setBackground(Color.white);
-		
-		
-				splitPane.setLeftComponent(scrollPane);
-			
-				scrollPane.setViewportView(lstMsg);
-				lstMsg.setCellRenderer(cellRenderer);
-				lstMsg.setFont(new Font("Consolas", Font.BOLD, 12));
+
+		splitPane.setLeftComponent(scrollPane);
+
+		scrollPane.setViewportView(lstMsg);
+		lstMsg.setCellRenderer(cellRenderer);
+		lstMsg.setFont(new Font("Consolas", Font.BOLD, 12));
 		getContentPane().setLayout(groupLayout);
 
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -221,7 +246,7 @@ public class PetriNetWindow extends JFrame {
 			public void windowOpened(java.awt.event.WindowEvent e) {
 				txtName.setText(petriNet.PetriNetName + " [Network Port:" + petriNet.NetworkPort + "]");
 				if (autoStart == true) {
-					
+
 					if (cbGraphFilter.getItemCount() == 0) {
 						cbGraphFilter.addItem("ALL");
 						cbGraphFilter.addItem("Follow The Transition");
@@ -271,7 +296,7 @@ public class PetriNetWindow extends JFrame {
 //				fw.write(model.get(i));
 //				fw.write("\n");
 //			}
-			for (int i = model.getSize()-1; i >=0; i--) {
+			for (int i = model.getSize() - 1; i >= 0; i--) {
 				fw.write(model.get(i));
 				fw.write("\n");
 			}
@@ -281,6 +306,16 @@ public class PetriNetWindow extends JFrame {
 
 	public void drawOETPN(JPanel pnlGraphics, JComboBox<String> filter) {
 
+		if (petriNet.Delay > 0) {
+
+		} else {
+			if (petriNet.PrintingSpeedIndex > 0) {
+				petriNet.PrintingSpeedIndex--;
+				return;
+			} else {
+				petriNet.PrintingSpeedIndex = petriNet.PrintingSpeed;
+			}
+		}
 		Functions fns = new Functions();
 
 		Graphics g = pnlGraphics.getGraphics();

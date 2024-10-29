@@ -36,7 +36,7 @@ public class Comparator {
 	differentiator.Print();
 	separator.Print();
 	
-	pn.SetInputFile("D:\\PetriInputData\\comparator.txt");
+	pn.SetInputFile("D:\\PetriInputData\\comparator3.txt");
 	
 	DataFuzzy p0 = new DataFuzzy();
 	p0.SetName("P0");
@@ -122,6 +122,9 @@ public class Comparator {
 
 			System.out.println("Comparator started \n ------------------------------");
 			pn.Delay = 0;
+			pn.PrintingSpeed=10;
+
+			pn.ShowLogInWindow=false;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

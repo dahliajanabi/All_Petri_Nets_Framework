@@ -207,7 +207,7 @@ public class Lanes_Intersection {
 	    
 		t2.GuardMappingList.add(grdT2);
 
-//		t2.Delay = 3;
+		t2.Delay = 1;
 		pn.Transitions.add(t2);
 
 		// T3 ------------------------------------------------
@@ -244,7 +244,7 @@ public class Lanes_Intersection {
 		grdT4.Activations.add(new Activation(t4, "P_TL2", TransitionOperation.Move, "P_TL2"));
 		t4.GuardMappingList.add(grdT2);
 
-		t4.Delay = 0;
+		t4.Delay = 1;
 		pn.Transitions.add(t4);
 
 		// T5 ------------------------------------------------
@@ -281,7 +281,7 @@ public class Lanes_Intersection {
 		grdT6.Activations.add(new Activation(t6, "P_TL3", TransitionOperation.Move, "P_TL3"));
 		t6.GuardMappingList.add(grdT6);
 
-		t6.Delay = 0;
+		t6.Delay = 1;
 		pn.Transitions.add(t6);
 
 		// T7 ------------------------------------------------
@@ -318,7 +318,7 @@ public class Lanes_Intersection {
 		grdT8.Activations.add(new Activation(t8, "P_TL4", TransitionOperation.Move, "P_TL4"));
 		t8.GuardMappingList.add(grdT8);
 
-		t8.Delay = 0;
+		t8.Delay = 1;
 		pn.Transitions.add(t8);
 
 		// T9----------------------------------------------------------------
@@ -420,7 +420,7 @@ public class Lanes_Intersection {
 		grdT14.Activations.add(new Activation(t14, "P_I", TransitionOperation.PopElementWithTargetToQueue, "P_o1"));
 		t14.GuardMappingList.add(grdT14);
 
-		t14.Delay = 0;
+		t14.Delay = 1;
 		pn.Transitions.add(t14);
 
 		// ---------------------------------SecondPart-------------------------------------------
@@ -458,7 +458,7 @@ public class Lanes_Intersection {
 		grdT16.Activations.add(new Activation(t16, "P_I", TransitionOperation.PopElementWithTargetToQueue, "P_o2"));
 		t16.GuardMappingList.add(grdT16);
 
-		t16.Delay = 0;
+		t16.Delay = 1;
 		pn.Transitions.add(t16);
 
 		// ----------------------ThirdPart----------------------------------------------------------------
@@ -497,7 +497,7 @@ public class Lanes_Intersection {
 		grdT18.Activations.add(new Activation(t18, "P_I", TransitionOperation.PopElementWithTargetToQueue, "P_o3"));
 		t18.GuardMappingList.add(grdT18);
 
-		t18.Delay = 0;
+		t18.Delay = 1;
 		pn.Transitions.add(t18);
 
 		// -------------------------------------FourthPart------------------------------------------
@@ -536,7 +536,7 @@ public class Lanes_Intersection {
 		grdT20.Activations.add(new Activation(t20, "P_I", TransitionOperation.PopElementWithTargetToQueue, "P_o4"));
 		t20.GuardMappingList.add(grdT20);
 
-		t20.Delay = 0;
+		t20.Delay = 1;
 		pn.Transitions.add(t20);
 
 		// -------------------------------------------------------------------------------------

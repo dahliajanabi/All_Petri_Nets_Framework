@@ -5,25 +5,15 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Paint;
-import java.awt.PaintContext;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.ColorModel;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
-import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
@@ -45,6 +35,11 @@ public class LineChart extends ApplicationFrame {
 		JPanel chartPanel = createDemoPanel();
 		chartPanel.setPreferredSize(new Dimension(500, 270));
 		setContentPane(chartPanel);
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		this.hide();
 	}
 
 	private static JFreeChart createChart(CategoryDataset dataset) {

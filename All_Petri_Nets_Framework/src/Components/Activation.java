@@ -890,8 +890,8 @@ public class Activation implements Serializable {
 				} else {
 					result.Value.Value += placeName.Weight * cuurentObj.Value.Value;
 				}
-				Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(cuurentObj.toString());
-				System.out.println(cuurentObj.toString());
+				
+				this.Parent.Parent.LogThis(cuurentObj.toString());
 			}
 
 		}
@@ -926,8 +926,9 @@ public class Activation implements Serializable {
 				} else {
 					result.Value.Value -= placeName.Weight * cuurentObj.Value.Value;
 				}
-				Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(cuurentObj.toString());
-				System.out.println(cuurentObj.toString());
+	
+				this.Parent.Parent.LogThis(cuurentObj.toString());
+				
 			}
 
 		}
@@ -962,8 +963,7 @@ public class Activation implements Serializable {
 				} else {
 					result.Value.Value *= placeName.Weight * cuurentObj.Value.Value;
 				}
-				Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(cuurentObj.toString());
-				System.out.println(cuurentObj.toString());
+				this.Parent.Parent.LogThis(cuurentObj.toString());
 			}
 
 		}
@@ -998,8 +998,7 @@ public class Activation implements Serializable {
 				} else {
 					result.Value.Value /= placeName.Weight * cuurentObj.Value.Value;
 				}
-				Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(cuurentObj.toString());
-				System.out.println(cuurentObj.toString());
+				this.Parent.Parent.LogThis(cuurentObj.toString());
 			}
 
 		}
@@ -1029,9 +1028,7 @@ public class Activation implements Serializable {
 
 				String msg= placeName1.PlaceName + " * Weight(" + placeName1.Weight + ") ------>>>>>>>>>"
 						+ DF1.Value.toString();
-				
-				this.Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(msg);
-				System.out.println(msg);
+				this.Parent.Parent.LogThis(msg);
 				ArrayList<FuzzyVectorValue> DF1Values = DF1.Value.Vector.GetNoneZeroValues();
 
 				ArrayList<FLRSPart> TriggeredMapping = new ArrayList<FLRSPart>();
@@ -1133,8 +1130,8 @@ public class Activation implements Serializable {
 				String msg = placeName1.PlaceName + " * Weight (" + placeName1.Weight + ") ------>>>>>>>>>"
 						+ DF1.Value.toString() + placeName2.PlaceName + " * Weight (" + placeName2.Weight
 						+ ") ------>>>>>>>>>" + DF2.Value.toString();
-				this.Parent.Parent.m_lDataLoadFinished.onDataLoadFinishedListener(msg);
-				System.out.println(msg);
+			
+				this.Parent.Parent.LogThis(msg);
 				ArrayList<FuzzyVectorValue> DF1Values = DF1.Value.Vector.GetNoneZeroValues();
 				ArrayList<FuzzyVectorValue> DF2Values = DF2.Value.Vector.GetNoneZeroValues();
 

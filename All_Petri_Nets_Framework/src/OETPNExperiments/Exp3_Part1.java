@@ -77,7 +77,7 @@ public class Exp3_Part1 {
 		grdT31.Activations.add(new Activation(t31, lstInput, TransitionOperation.Add, "p32"));
 
 		t31.GuardMappingList.add(grdT31);
-		t31.Delay = 0;
+		t31.Delay = 1;
 		mpn.Transitions.add(t31);
 
 		// T32 ------------------------------------------------
@@ -157,7 +157,7 @@ public class Exp3_Part1 {
 
 		DataFloat p2 = new DataFloat();
 		p2.SetName("p2");
-		//p2.SetValue(2.0f); //testing
+		p2.SetValue(2.0f); //testing
 		pn.PlaceList.add(p2);
 
 		DataSubPetriNet p3 = new DataSubPetriNet();
@@ -198,11 +198,22 @@ public class Exp3_Part1 {
 		GuardMapping grdT1 = new GuardMapping();
 		grdT1.condition = T1Ct1;
 
-		grdT1.Activations.add(new Activation(t1, "PN3", TransitionOperation.Copy, "p3"));
+		grdT1.Activations.add(new Activation(t1, "PN3", TransitionOperation.Move, "p3"));
 		grdT1.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
 		grdT1.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
-
+		
 		t1.GuardMappingList.add(grdT1);
+		
+		Condition T1Ct3 = new Condition(t1, "p1", TransitionCondition.NotNull);
+		Condition T1Ct4 = new Condition(t1, "p2", TransitionCondition.IsNull);
+		T1Ct3.SetNextCondition(LogicConnector.AND, T1Ct4);
+
+		GuardMapping grdT11 = new GuardMapping();
+		grdT11.condition = T1Ct3;
+
+		grdT11.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
+
+		t1.GuardMappingList.add(grdT11);
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
@@ -255,7 +266,7 @@ public class Exp3_Part1 {
 		grdT3.Activations.add(new Activation(t3, "p4", TransitionOperation.Move, "p5"));
 
 		t3.GuardMappingList.add(grdT3);
-		t3.Delay = 0;
+		t3.Delay = 1;
 		pn.Transitions.add(t3);
 
 		System.out.println("Exp3 part 1 started \n ------------------------------");

@@ -104,7 +104,7 @@ public class Exp1 {
 		
 		
 		t23.GuardMappingList.add(grdT23);
-		t23.Delay = 0;
+		t23.Delay = 1;
 		spn.Transitions.add(t23);
 		
 		
@@ -224,7 +224,7 @@ public class Exp1 {
 		grdT3.Activations.add(new Activation(t3, "p3", TransitionOperation.Move, "p1"));
 
 		t3.GuardMappingList.add(grdT3);
-		t3.Delay = 0;
+		t3.Delay = 1;
 		pn.Transitions.add(t3);
 
 		System.out.println("Exp1 started \n ------------------------------");

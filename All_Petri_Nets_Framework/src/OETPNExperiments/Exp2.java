@@ -107,7 +107,7 @@ public class Exp2 {
 		grdT23.Activations.add(new Activation(t23, "p23", TransitionOperation.Move, "p21"));
 
 		t23.GuardMappingList.add(grdT23);
-		t23.Delay = 0;
+		t23.Delay = 1;
 		spn.Transitions.add(t23);
 
 		// T24 ------------------------------------------------
@@ -141,7 +141,7 @@ public class Exp2 {
 
 		DataFloat subConstantValue1 = new DataFloat();
 		subConstantValue1.SetName("subConstantValue1");
-		subConstantValue1.SetValue(3.0f);
+		subConstantValue1.SetValue(4.0f);
 		spn.ConstantPlaceList.add(subConstantValue1);
 
 		DataFloat p31 = new DataFloat();
@@ -219,7 +219,7 @@ public class Exp2 {
 		grdT33.Activations.add(new Activation(t33, "p33", TransitionOperation.Move, "p31"));
 
 		t33.GuardMappingList.add(grdT33);
-		t33.Delay = 0;
+		t33.Delay = 1;
 		spn.Transitions.add(t33);
 
 		// T34 ------------------------------------------------
@@ -322,7 +322,7 @@ public class Exp2 {
 		grdT4.Activations.add(new Activation(t4, "p4", TransitionOperation.Move, "p2"));
 
 		t4.GuardMappingList.add(grdT4);
-		t4.Delay = 0;
+		t4.Delay = 1;
 		mpn.Transitions.add(t4);
 
 		mpn.Delay = 3000;
@@ -467,7 +467,7 @@ public class Exp2 {
 		pn.Transitions.add(t1);
 
 		System.out.println("Exp2 started \n ------------------------------");
-		pn.Delay = 7000;
+		pn.Delay = 3000;
 
 		PetriNetWindow frame = new PetriNetWindow(false);
 		frame.petriNet = pn;

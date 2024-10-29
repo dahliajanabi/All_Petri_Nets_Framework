@@ -27,6 +27,8 @@ public class OETPN {
 	pn.PetriNetName = "OETPN";
 	pn.NetworkPort = 1080;
 	
+	pn.SetInputFile("D:\\PetriInputData\\OETPNInput.txt");
+	
 	DataFuzzy p_00 = new DataFuzzy();
 	p_00.SetName("p_00");
 	p_00.SetValue(new Fuzzy(0.0F));
@@ -74,9 +76,7 @@ public class OETPN {
 	p_09.SetName("Cc_2_u");
 	p_09.Value = new TransferOperation("localhost", "1082", "u"); //to plant
 	pn.PlaceList.add(p_09);
-	
-	pn.SetInputFile("D:\\PetriInputData\\PIController.txt");
-	
+		
 	
 	// T_00 ------------------------------------------------
 				PetriTransition t_00 = new PetriTransition(pn);
@@ -170,7 +170,9 @@ public class OETPN {
 			// -------------------------------------------
 
 			System.out.println("OETPN started \n ------------------------------");
-			pn.Delay = 0;
+			pn.Delay = 100;
+			pn.PrintingSpeed=10;
+			pn.ShowLogInWindow=false;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

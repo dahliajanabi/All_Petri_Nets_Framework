@@ -27,6 +27,7 @@ public class PIController {
 	pn.PetriNetName = "PI Controller";
 	pn.NetworkPort = 1081;
 	
+	//pn.SetInputFile("D:\\PetriInputData\\PIController.txt"); //for testing PI controller alone, T7 must all be commented
 	
 	FLRS reader = new FLRS(new FV(FZ.NL), new FV(FZ.NM), new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.PL), 
 						   new FV(FZ.NL), new FV(FZ.NM), new FV(FZ.ZR), new FV(FZ.PM), new FV(FZ.PL), 
@@ -82,7 +83,7 @@ public class PIController {
 	p1.SetName("P1");
 	pn.PlaceList.add(p1);
 
-	DataFuzzy p2 = new DataFuzzy();
+	DataFuzzy p2 = new DataFuzzy(); //from OETPN
 	p2.SetName("P2");
 	p2.SetValue(new Fuzzy(0.0F));
 	pn.PlaceList.add(p2);
@@ -91,7 +92,7 @@ public class PIController {
 	p3.SetName("P3");
 	pn.PlaceList.add(p3);
 
-	DataFuzzy p4 = new DataFuzzy();
+	DataFuzzy p4 = new DataFuzzy();  //from OETPN
 	p4.SetName("P4");
 	//p4.SetValue(new Fuzzy(0.55F));
 	pn.PlaceList.add(p4);
@@ -332,7 +333,7 @@ public class PIController {
 			t6.Delay = 1;
 			pn.Transitions.add(t6);
 			
-// T6 ------------------------------------------------
+// T7 ------------------------------------------------
 			PetriTransition t7 = new PetriTransition(pn);
 			t7.TransitionName = "T7";
 			t7.InputPlaceName.add("P9");
@@ -355,7 +356,9 @@ public class PIController {
 			// pn.Transitions.add(t3);
 
 			System.out.println("PIController started \n ------------------------------");
-			pn.Delay = 0;
+			pn.Delay = 100;
+			pn.PrintingSpeed=10;
+			pn.ShowLogInWindow=false;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

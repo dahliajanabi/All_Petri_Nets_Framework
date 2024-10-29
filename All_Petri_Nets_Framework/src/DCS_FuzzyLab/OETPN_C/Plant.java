@@ -36,9 +36,9 @@ public class Plant {
 	pn.NetworkPort = 1082;
 	
 	
-	DataFuzzy p_i2 = new DataFuzzy();
+	DataFuzzy p_i2 = new DataFuzzy(); //from OETPN
 	p_i2.SetName("u");
-	p_i2.SetValue(new Fuzzy(0.0F));
+	p_i2.SetValue(new Fuzzy(0.55F));
 	pn.PlaceList.add(p_i2);
 	
 	DataFuzzy p_20 = new DataFuzzy(); //from operator
@@ -111,7 +111,9 @@ public class Plant {
 			// pn.Transitions.add(t3);
 
 			System.out.println("Plant started \n ------------------------------");
-			pn.Delay = 0;
+			pn.Delay = 100;
+			pn.PrintingSpeed=10;
+			pn.ShowLogInWindow=false;
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

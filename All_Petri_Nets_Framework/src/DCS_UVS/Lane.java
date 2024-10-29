@@ -89,7 +89,7 @@ public class Lane {
 		
 		t2.GuardMappingList.add(grdT2);
 		
-		t2.Delay = 0;
+		t2.Delay = 1;
 		pn.Transitions.add(t2);
 		
 		
