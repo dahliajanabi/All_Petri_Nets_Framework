@@ -152,7 +152,7 @@ public class Controller2F {
 		
 		
 		
-		Condition T3Ct1 = new Condition(t2, "y1r2", TransitionCondition.NotNull);
+		Condition T3Ct1 = new Condition(t3, "y1r2", TransitionCondition.NotNull);
 
 		GuardMapping grdT3 = new GuardMapping();
 		grdT3.condition= T3Ct1;
@@ -194,7 +194,7 @@ public class Controller2F {
 		t5.InputPlaceName.add("r1y2");
 		
 		
-		Condition T5Ct1 = new Condition(t2, "r1y2", TransitionCondition.NotNull);
+		Condition T5Ct1 = new Condition(t5, "r1y2", TransitionCondition.NotNull);
 
 		GuardMapping grdT5 = new GuardMapping();
 		grdT5.condition= T5Ct1;
