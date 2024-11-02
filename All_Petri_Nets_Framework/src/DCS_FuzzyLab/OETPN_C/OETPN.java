@@ -1,7 +1,6 @@
 package DCS_FuzzyLab.OETPN_C;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import Components.Activation;
 import Components.Condition;
 import Components.GuardMapping;
@@ -10,13 +9,8 @@ import Components.PetriNetWindow;
 import Components.PetriTransition;
 import DataObjects.DataFuzzy;
 import DataObjects.DataTransfer;
-import DataOnly.FLRS;
-import DataOnly.FV;
 import DataOnly.Fuzzy;
-import DataOnly.FuzzyVector;
-import DataOnly.PlaceNameWithWeight;
 import DataOnly.TransferOperation;
-import Enumerations.FZ;
 import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
@@ -44,6 +38,7 @@ public class OETPN {
 
 	DataFuzzy p_03 = new DataFuzzy(); //from plant
 	p_03.SetName("Cc_2_y");
+	p_03.SetValue(new Fuzzy(0.55F));
 	pn.PlaceList.add(p_03);
 
 	DataFuzzy p_04 = new DataFuzzy();
@@ -106,6 +101,7 @@ public class OETPN {
 			t_01.TransitionName = "t_01";
 			t_01.InputPlaceName.add("Cc_2_y");
 			t_01.InputPlaceName.add("p_01");
+			//t_01.IsAsync= true;
 
 			Condition T_01Ct1 = new Condition(t_01, "Cc_2_y", TransitionCondition.NotNull);
 			Condition T_01Ct2 = new Condition(t_01, "p_01", TransitionCondition.NotNull);
@@ -150,6 +146,7 @@ public class OETPN {
 			t_03.TransitionName = "t_03";
 			t_03.InputPlaceName.add("p_06");
 			t_03.InputPlaceName.add("Cc_1_c");
+			//t_03.IsAsync= true;
 
 			Condition T_03Ct1 = new Condition(t_03, "p_06", TransitionCondition.NotNull);
 			Condition T_03Ct2 = new Condition(t_03, "Cc_1_c", TransitionCondition.NotNull);
@@ -170,8 +167,8 @@ public class OETPN {
 			// -------------------------------------------
 
 			System.out.println("OETPN started \n ------------------------------");
-			pn.Delay = 100;
-			pn.PrintingSpeed=10;
+			pn.Delay = 10;
+			pn.PrintingSpeed=50;
 			pn.ShowLogInWindow=false;
 			// pn.Start();
 

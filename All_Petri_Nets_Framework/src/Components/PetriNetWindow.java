@@ -92,7 +92,7 @@ public class PetriNetWindow extends JFrame {
 				for (PetriObject p : petriNet.PlaceList) {
 					SelectionPanel.add(new Checkbox(p.GetName(), false));
 				}
-				
+
 				if (!petriNet.PauseFlag) {
 					networkThread = new Thread(petriNet);
 					networkThread.start();
@@ -101,8 +101,12 @@ public class PetriNetWindow extends JFrame {
 					petriNet.setDataLoadFinishedListener(new PetriNet.DataLoadFinishedListener() {
 						@Override
 						public void onDataLoadFinishedListener(String data_type) {
+							if (data_type == "DrawGraphOnly")
+							{
+								drawOETPN(pnlGraphics, cbGraphFilter);
+								return;
+							}
 							addString(model, scrollPane, data_type, lstMsg);
-							drawOETPN(pnlGraphics, cbGraphFilter);
 						}
 					});
 				} else {
@@ -150,80 +154,70 @@ public class PetriNetWindow extends JFrame {
 		splitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.TRAILING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(SelectionPanel, GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(10)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
+				.createSequentialGroup()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(splitPane,
+								GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap().addComponent(SelectionPanel,
+								GroupLayout.DEFAULT_SIZE, 873, Short.MAX_VALUE))
+						.addGroup(groupLayout.createSequentialGroup().addGap(10).addGroup(groupLayout
+								.createParallelGroup(Alignment.LEADING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
-									.addGap(10)
-									.addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
+										.addComponent(btnStart, GroupLayout.PREFERRED_SIZE, 89,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(10).addComponent(btnPause, GroupLayout.PREFERRED_SIZE, 89,
+												GroupLayout.PREFERRED_SIZE))
 								.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 385, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnSaveLog)
-									.addGap(18)
-									.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)))))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(11)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnStart)
-						.addComponent(btnPause)
-						.addComponent(btnMetrics)
-						.addComponent(txtMetrices, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(11)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addGroup(groupLayout.createSequentialGroup().addComponent(btnSaveLog)
+												.addGap(18).addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, 283,
+														GroupLayout.PREFERRED_SIZE))
+										.addGroup(groupLayout.createSequentialGroup()
+												.addComponent(btnMetrics, GroupLayout.PREFERRED_SIZE, 109,
+														GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(ComponentPlacement.RELATED).addComponent(txtMetrices,
+														GroupLayout.PREFERRED_SIZE, 332, GroupLayout.PREFERRED_SIZE)))))
+				.addContainerGap()));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addGap(11)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(btnStart)
+						.addComponent(btnPause).addComponent(btnMetrics).addComponent(txtMetrices,
+								GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGap(11)
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(txtName, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnSaveLog)
-							.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(SelectionPanel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
-					.addGap(8))
-		);
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(btnSaveLog)
+								.addComponent(cbGraphFilter, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)))
+				.addPreferredGap(ComponentPlacement.RELATED)
+				.addComponent(SelectionPanel, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.UNRELATED)
+				.addComponent(splitPane, GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE).addGap(8)));
 
 //		JList<? extends E> placeSelectionList = new JList();
 //		panel.add(list);
 //		PlaceSelectlist.setCellRenderer(new CheckboxListCellRenderer());
 //		SelectionPanel.add(PlaceSelectlist);
 		SelectionPanel.setBackground(Color.LIGHT_GRAY);
-		
-				JButton btnShowGraph = new JButton("Show Graph");
-				SelectionPanel.add(btnShowGraph);
-				btnShowGraph.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						ArrayList<String> filter = new ArrayList<String>();
-						for (Component c : SelectionPanel.getComponents()) {
-							if (c instanceof Checkbox) {
-								Checkbox cc = ((Checkbox) c);
-								if (cc.getState()) {
-									filter.add(cc.getLabel());
-								}
-							}
+
+		JButton btnShowGraph = new JButton("Show Graph");
+		SelectionPanel.add(btnShowGraph);
+		btnShowGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<String> filter = new ArrayList<String>();
+				for (Component c : SelectionPanel.getComponents()) {
+					if (c instanceof Checkbox) {
+						Checkbox cc = ((Checkbox) c);
+						if (cc.getState()) {
+							filter.add(cc.getLabel());
 						}
-						petriNet.ShowChart(filter);
 					}
-				});
+				}
+				petriNet.ShowChart(filter);
+			}
+		});
 
 		splitPane.setRightComponent(pnlGraphics);
 		pnlGraphics.setBackground(Color.white);
@@ -306,7 +300,7 @@ public class PetriNetWindow extends JFrame {
 
 	public void drawOETPN(JPanel pnlGraphics, JComboBox<String> filter) {
 
-		if (petriNet.Delay > 0) {
+		if (petriNet.PrintingSpeed == 1) {
 
 		} else {
 			if (petriNet.PrintingSpeedIndex > 0) {

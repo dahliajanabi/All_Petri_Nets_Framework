@@ -36,16 +36,16 @@ public class Comparator {
 	differentiator.Print();
 	separator.Print();
 	
-	pn.SetInputFile("D:\\PetriInputData\\comparator3.txt");
+	pn.SetInputFile("D:\\PetriInputData\\comparator.txt");
 	
 	DataFuzzy p0 = new DataFuzzy();
 	p0.SetName("P0");
-	p0.SetValue(new Fuzzy(0.1F));
+//	p0.SetValue(new Fuzzy(0.0F));
 	pn.PlaceList.add(p0);
 	
 	DataFuzzy p1 = new DataFuzzy();
 	p1.SetName("P1");
-	p1.SetValue(new Fuzzy(0.2F));
+//	p1.SetValue(new Fuzzy(0.0F));
 	pn.PlaceList.add(p1);
 
 	DataFuzzy p2 = new DataFuzzy();
@@ -121,10 +121,10 @@ public class Comparator {
 			// pn.Transitions.add(t3);
 
 			System.out.println("Comparator started \n ------------------------------");
-			pn.Delay = 0;
+			pn.Delay = 1000;
 			pn.PrintingSpeed=10;
 
-			pn.ShowLogInWindow=false;
+			pn.ShowLogInWindow=true; 
 			// pn.Start();
 
 			PetriNetWindow frame = new PetriNetWindow(false);

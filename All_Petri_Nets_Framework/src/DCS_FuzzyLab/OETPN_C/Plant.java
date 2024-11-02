@@ -20,25 +20,23 @@ import Enumerations.FZ;
 import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
-/*				The Equations are:
-*               xNew = a * x + b * u;
-*				currentStatus = c * x + d * u;
-*               The constants are:
-*				a = 0.5f;
-*			    b = 0.7f;
-*				c = 0.2f;
-*				d = 0.3f;
-*/
+
 public class Plant {
 	public static void main (String[]args) throws FileNotFoundException {
 	PetriNet pn = new PetriNet();
 	pn.PetriNetName = "Plant";
 	pn.NetworkPort = 1082;
 	
+	FLRS doubleChannelAdder = new FLRS(new FV(FZ.NL, FZ.NL), new FV(FZ.NL, FZ.NL), new FV(FZ.NL, FZ.NL), new FV(FZ.NM, FZ.NM),new FV(FZ.ZR, FZ.ZR), 
+			   new FV(FZ.NL, FZ.NL), new FV(FZ.NL, FZ.NL), new FV(FZ.NM, FZ.NM), new FV(FZ.ZR, FZ.ZR),new FV(FZ.PM, FZ.PM), 
+			   new FV(FZ.NL, FZ.NL), new FV(FZ.NM, FZ.NM), new FV(FZ.ZR, FZ.ZR), new FV(FZ.PM, FZ.PM),new FV(FZ.PL, FZ.PL), 
+			   new FV(FZ.NM, FZ.NM), new FV(FZ.ZR, FZ.ZR), new FV(FZ.PM, FZ.PM), new FV(FZ.PL, FZ.PL),new FV(FZ.PL, FZ.PL),
+			   new FV(FZ.ZR, FZ.ZR), new FV(FZ.PM, FZ.PM), new FV(FZ.PL, FZ.PL), new FV(FZ.PL, FZ.PL),new FV(FZ.PL, FZ.PL));
+	
+	doubleChannelAdder.Print();
 	
 	DataFuzzy p_i2 = new DataFuzzy(); //from OETPN
 	p_i2.SetName("u");
-	p_i2.SetValue(new Fuzzy(0.55F));
 	pn.PlaceList.add(p_i2);
 	
 	DataFuzzy p_20 = new DataFuzzy(); //from operator
@@ -75,12 +73,12 @@ public class Plant {
 				input1.add(new PlaceNameWithWeight("x", 0.5F)); //a*x
 				input1.add(new PlaceNameWithWeight("u", 0.7F)); //b*u
 				
-				ArrayList<PlaceNameWithWeight> input2 = new ArrayList<>();
-				input2.add(new PlaceNameWithWeight("x", 0.2F)); //c*x
-				input2.add(new PlaceNameWithWeight("u", 0.3F)); //d*u
+				ArrayList<String> output1 = new ArrayList<>();
+				output1.add("x"); 
+				output1.add("y"); 
 
-				grdt_21.Activations.add(new Activation(input1, TransitionOperation.Add_Fuzzy, "x", t_21));
-				grdt_21.Activations.add(new Activation(input1, TransitionOperation.Add_Fuzzy, "y", t_21));
+
+				grdt_21.Activations.add(new Activation(t_21, doubleChannelAdder, input1, TransitionOperation.FLRS, output1));
 				
 				
 				
@@ -105,14 +103,13 @@ public class Plant {
 				t_22.GuardMappingList.add(grdt_22);
 
 				t_22.Delay = 0;
-				pn.Transitions.add(t_22);			
+				pn.Transitions.add(t_22);	
 
-			// PetriTransition t3 = new PetriTransition(pn);
-			// pn.Transitions.add(t3);
+	// -------------------------------------------
 
 			System.out.println("Plant started \n ------------------------------");
-			pn.Delay = 100;
-			pn.PrintingSpeed=10;
+			pn.Delay = 10;
+			pn.PrintingSpeed=50;
 			pn.ShowLogInWindow=false;
 			// pn.Start();
 

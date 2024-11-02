@@ -274,6 +274,9 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 	public void LogThis(String log) {
 		if (ShowLogInWindow) {
 			m_lDataLoadFinished.onDataLoadFinishedListener(log);
+		}else
+		{
+			m_lDataLoadFinished.onDataLoadFinishedListener("DrawGraphOnly");
 		}
 
 		if (ShowLog) {
