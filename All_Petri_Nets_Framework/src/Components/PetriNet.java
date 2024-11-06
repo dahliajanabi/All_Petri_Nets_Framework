@@ -13,6 +13,7 @@ import DataObjects.DataFuzzy;
 import DataObjects.DataInteger;
 import DataObjects.DataSubPetriNet;
 import DataOnly.Fuzzy;
+import DataOnly.NetworkCommand;
 import DataOnly.SubPetri;
 import Enumerations.PetriNetState;
 import Enumerations.PetriObjectType;
@@ -274,8 +275,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 	public void LogThis(String log) {
 		if (ShowLogInWindow) {
 			m_lDataLoadFinished.onDataLoadFinishedListener(log);
-		}else
-		{
+		} else {
 			m_lDataLoadFinished.onDataLoadFinishedListener("DrawGraphOnly");
 		}
 
@@ -450,7 +450,27 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 							net.PlaceList.set(index, sub);
 
 						} else {
-							net.PlaceList.set(index, net.inputdata.petriObject);
+							if (net.inputdata.petriObject.GetType() == PetriObjectType.DataNetworkCommand) {
+								NetworkCommand cmd = (NetworkCommand) net.inputdata.petriObject.GetValue();
+								switch (cmd.command) {
+								case Pause:
+									PauseFlag = true;
+									LogThis("-------------------Got Network Command Pause-------------------");
+									break;
+								case Start:
+									PauseFlag = false;
+									LogThis("-------------------Got Network Command Start-------------------");
+									break;
+								case Stop:
+									StopFlag = true;
+									LogThis("-------------------Got Network Command Stop-------------------");
+									break;
+								default:
+									break;
+								}
+							} else {
+								net.PlaceList.set(index, net.inputdata.petriObject);
+							}
 						}
 					} catch (ClassNotFoundException e) {
 						// TODO Auto-generated catch block

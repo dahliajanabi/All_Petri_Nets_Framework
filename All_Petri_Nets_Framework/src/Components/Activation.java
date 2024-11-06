@@ -18,6 +18,7 @@ import DataObjects.DataFloat;
 import DataObjects.DataFloatFloat;
 import DataObjects.DataFuzzy;
 import DataObjects.DataInteger;
+import DataObjects.DataNetworkCommand;
 import DataObjects.DataREL;
 import DataObjects.DataRELQueue;
 import DataObjects.DataString;
@@ -649,6 +650,10 @@ public class Activation implements Serializable {
 		
 		if (temp instanceof DataFuzzy) {
 			result.SetValue((PetriObject) ((DataFuzzy) temp).clone());
+		}
+		
+		if (temp instanceof DataNetworkCommand) {
+			result.SetValue((PetriObject) ((DataNetworkCommand) temp).clone());
 		}
 
 	}

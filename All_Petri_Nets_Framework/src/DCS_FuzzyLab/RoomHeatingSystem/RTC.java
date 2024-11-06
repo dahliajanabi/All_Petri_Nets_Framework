@@ -9,14 +9,17 @@ import Components.PetriNet;
 import Components.PetriNetWindow;
 import Components.PetriTransition;
 import DataObjects.DataFuzzy;
+import DataObjects.DataNetworkCommand;
 import DataObjects.DataTransfer;
 import DataOnly.FLRS;
 import DataOnly.FV;
 import DataOnly.Fuzzy;
+import DataOnly.NetworkCommand;
 import DataOnly.PlaceNameWithWeight;
 import DataOnly.TransferOperation;
 import Enumerations.FZ;
 import Enumerations.LogicConnector;
+import Enumerations.NetworkCommands;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
  
@@ -88,9 +91,29 @@ public class RTC {
 	
 	DataTransfer u = new DataTransfer();
 	u.SetName("u");
-	u.Value = new TransferOperation("localhost", "1081", "Running State"); //to Heater Tank Plant ON/OFF
+	u.Value = new TransferOperation("localhost", "1081", "u"); //to Heater Tank Plant ON/OFF
 	pn.PlaceList.add(u);
 	
+	
+	DataNetworkCommand PauseCommand = new DataNetworkCommand();
+	PauseCommand.SetName("PauseCommand");
+	PauseCommand.SetValue(new NetworkCommand(NetworkCommands.Pause));
+	pn.ConstantPlaceList.add(PauseCommand);
+	
+	DataNetworkCommand StartCommand = new DataNetworkCommand();
+	StartCommand.SetName("StartCommand");
+	StartCommand.SetValue(new NetworkCommand(NetworkCommands.Start));
+	pn.ConstantPlaceList.add(StartCommand);
+	
+	DataFuzzy NL = new DataFuzzy();
+	NL.SetName("NL");
+	NL.SetValue(new Fuzzy(-1F));
+	pn.ConstantPlaceList.add(NL);
+	
+	DataFuzzy PL = new DataFuzzy();
+	PL.SetName("PL");
+	PL.SetValue(new Fuzzy(1F));
+	pn.ConstantPlaceList.add(PL);
 	
 	// T0 ------------------------------------------------
 				PetriTransition t0 = new PetriTransition(pn);
@@ -211,22 +234,28 @@ public class RTC {
 			t4.InputPlaceName.add("P6");
 			t4.InputPlaceName.add("P7");
 
+	
 			Condition T4Ct1 = new Condition(t4, "P6", TransitionCondition.NotNull);
+			Condition T4Ct2 = new Condition(t4, "P6", TransitionCondition.Equal, "NL");
+			T4Ct1.SetNextCondition(LogicConnector.AND, T4Ct2);
 
-			GuardMapping grdT4 = new GuardMapping();
-			grdT4.condition = T4Ct1;
+			GuardMapping grdT41 = new GuardMapping();
+			grdT41.condition = T4Ct1;
 
-			grdT4.Activations.add(new Activation(t4, "P6", TransitionOperation.SendOverNetwork, "u"));
+			grdT41.Activations.add(new Activation(t4, "StartCommand", TransitionOperation.SendOverNetwork, "u"));
 			
-			t4.GuardMappingList.add(grdT4);
+			t4.GuardMappingList.add(grdT41);
 			
+			//-----------------------------------------------------------------
 			
-			Condition T4Ct2 = new Condition(t4, "P7", TransitionCondition.NotNull);
+			Condition T4Ct3 = new Condition(t4, "P6", TransitionCondition.NotNull);
+			Condition T4Ct4 = new Condition(t4, "P6", TransitionCondition.Equal, "PL");
+			T4Ct3.SetNextCondition(LogicConnector.AND, T4Ct4);
 
 			GuardMapping grdT42 = new GuardMapping();
-			grdT42.condition = T4Ct2;
+			grdT42.condition = T4Ct3;
 
-			grdT42.Activations.add(new Activation(t4, "P7", TransitionOperation.SendOverNetwork, "u"));
+			grdT42.Activations.add(new Activation(t4, "PauseCommand", TransitionOperation.SendOverNetwork, "u"));
 			
 			t4.GuardMappingList.add(grdT42);
 			

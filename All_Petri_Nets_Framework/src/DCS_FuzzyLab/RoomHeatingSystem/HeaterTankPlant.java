@@ -60,10 +60,6 @@ public class HeaterTankPlant {
 		u.SetName("u");
 		pn.PlaceList.add(u);
 		
-		DataFuzzy runningState = new DataFuzzy(); // from Heater Tank Plant
-		runningState.SetName("Running State");
-		pn.PlaceList.add(runningState);
-		
 		DataTransfer sendHeat = new DataTransfer();
 		sendHeat.SetName("sendHeat");
 		sendHeat.Value = new TransferOperation("localhost", "1080", "c"); // to Room

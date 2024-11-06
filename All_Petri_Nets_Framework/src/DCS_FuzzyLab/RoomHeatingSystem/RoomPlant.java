@@ -64,7 +64,7 @@ public class RoomPlant {
 
 		DataFuzzy xold = new DataFuzzy();
 		xold.SetName("xold");
-		xold.SetValue(new Fuzzy(0.92F)); // start temp 23 and temp range -25 - 25
+		xold.SetValue(new Fuzzy(0.9F)); // start temp 23 and temp range -25 - 25
 		pn.PlaceList.add(xold);
 		
 		DataFuzzy x = new DataFuzzy();
