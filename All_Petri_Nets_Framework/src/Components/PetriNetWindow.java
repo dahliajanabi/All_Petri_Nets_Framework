@@ -106,6 +106,7 @@ public class PetriNetWindow extends JFrame {
 								drawOETPN(pnlGraphics, cbGraphFilter);
 								return;
 							}
+							drawOETPN(pnlGraphics, cbGraphFilter);
 							addString(model, scrollPane, data_type, lstMsg);
 						}
 					});
