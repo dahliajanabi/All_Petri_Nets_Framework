@@ -137,5 +137,19 @@ public class FuzzyVector implements Serializable {
 
 			return;
 		}
+		
+		if (v > 1F) {
+			FuzzyVectorValue val = Values.stream().filter((x) -> x.Zone == FZ.PL).findFirst().orElse(null);
+
+			val.Value = 1f;
+			return;
+		}
+		
+		if (v < -1F) {
+			FuzzyVectorValue val = Values.stream().filter((x) -> x.Zone == FZ.NL).findFirst().orElse(null);
+
+			val.Value = 1f;
+			return;
+		}
 	}
 }
