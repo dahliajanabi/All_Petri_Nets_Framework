@@ -60,6 +60,24 @@ public class Comparator {
 	p4.SetName("P4");
 	pn.PlaceList.add(p4);
 	
+	DataFuzzy c1 = new DataFuzzy();
+	c1.SetName("NLToken");
+	c1.SetValue(new Fuzzy(-1.0F));
+	pn.ConstantPlaceList.add(c1);
+	
+	DataFuzzy c2 = new DataFuzzy();
+	c2.SetName("PLToken");
+	c2.SetValue(new Fuzzy(1.0F));
+	pn.ConstantPlaceList.add(c2);
+	
+	DataFuzzy p5 = new DataFuzzy();
+	p5.SetName("P5");
+	pn.PlaceList.add(p5);
+	
+	DataFuzzy p6 = new DataFuzzy();
+	p6.SetName("P6");
+	pn.PlaceList.add(p6);
+	
 	// T0 ------------------------------------------------
 			PetriTransition t0 = new PetriTransition(pn);
 			t0.TransitionName = "T0";
@@ -114,6 +132,35 @@ public class Comparator {
 
 			t1.Delay = 0;
 			pn.Transitions.add(t1);
+			
+			// tOut ------------------------------------------------
+			PetriTransition tOut = new PetriTransition(pn);
+			tOut.TransitionName = "TOut";
+			tOut.InputPlaceName.add("P3");
+			tOut.InputPlaceName.add("P4");
+
+			Condition TOutCt1 = new Condition(tOut, "P3", TransitionCondition.NotNull);
+
+			GuardMapping grdtOut1 = new GuardMapping();
+			grdtOut1.condition = TOutCt1;
+			
+			grdtOut1.Activations.add(new Activation(tOut, "NLToken", TransitionOperation.Move, "P6"));
+			grdtOut1.Activations.add(new Activation(tOut, "", TransitionOperation.MakeNull, "P5")); //to consume the token from the previous tick
+			tOut.GuardMappingList.add(grdtOut1);
+			
+			
+			Condition TOutCt2 = new Condition(tOut, "P4", TransitionCondition.NotNull);
+
+			GuardMapping grdtOut2 = new GuardMapping();
+			grdtOut2.condition = TOutCt2;
+			
+			grdtOut2.Activations.add(new Activation(tOut, "PLToken", TransitionOperation.Move, "P5"));
+			grdtOut2.Activations.add(new Activation(tOut, "", TransitionOperation.MakeNull, "P6")); //to consume the token from the previous tick
+			tOut.GuardMappingList.add(grdtOut2);
+			
+			
+			tOut.Delay = 0;
+			pn.Transitions.add(tOut);
 
 			// -------------------------------------------
 
@@ -121,7 +168,7 @@ public class Comparator {
 			// pn.Transitions.add(t3);
 
 			System.out.println("Comparator started \n ------------------------------");
-			pn.Delay = 1000;
+			pn.Delay = 10;
 			pn.PrintingSpeed=10;
 
 			pn.ShowLogInWindow=true; 
