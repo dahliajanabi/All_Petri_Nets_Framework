@@ -248,8 +248,8 @@ public class RTC {
 			
 			//-----------------------------------------------------------------
 			
-			Condition T4Ct3 = new Condition(t4, "P6", TransitionCondition.NotNull);
-			Condition T4Ct4 = new Condition(t4, "P6", TransitionCondition.Equal, "PL");
+			Condition T4Ct3 = new Condition(t4, "P7", TransitionCondition.NotNull);
+			Condition T4Ct4 = new Condition(t4, "P7", TransitionCondition.Equal, "PL");
 			T4Ct3.SetNextCondition(LogicConnector.AND, T4Ct4);
 
 			GuardMapping grdT42 = new GuardMapping();
