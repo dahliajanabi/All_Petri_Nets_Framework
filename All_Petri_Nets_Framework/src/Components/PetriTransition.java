@@ -210,7 +210,7 @@ public class PetriTransition implements PetriObject, Serializable {
 			else
 				temp1.add(petriObject.toString());
 		}
-		return TransitionName + " Temp Marking [" + String.join(",", temp1) + "]";
+		return TransitionName + " Temp Marking [" + String.join(",", temp1) + "] Delay:"+ Delay;
 	}
 
 	public boolean Printable = true;

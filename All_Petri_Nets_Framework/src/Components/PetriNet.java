@@ -303,7 +303,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 					ExecutionList.add(trr);
 				} else {
 					conditionsStatus += "[" + Transitions.get(i).TransitionName + " conditions are false]"
-							+ Transitions.get(i).Delay;
+							+ " Delay:" + Transitions.get(i).Delay + " ";
 				}
 			}
 		}
@@ -588,7 +588,7 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 						ExecutionList.add(trr);
 					} else {
 						conditionsStatus += "[" + Transitions.get(i).TransitionName + " conditions are false]"
-								+ Transitions.get(i).Delay;
+								+ " Delay:" + Transitions.get(i).Delay+ " ";
 					}
 				}
 			}
