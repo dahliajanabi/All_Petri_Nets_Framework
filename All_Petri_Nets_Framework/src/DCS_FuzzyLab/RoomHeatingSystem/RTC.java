@@ -242,7 +242,7 @@ public class RTC {
 			GuardMapping grdT41 = new GuardMapping();
 			grdT41.condition = T4Ct1;
 
-			grdT41.Activations.add(new Activation(t4, "StartCommand", TransitionOperation.SendOverNetwork, "u"));
+			grdT41.Activations.add(new Activation(t4, "PauseCommand", TransitionOperation.SendOverNetwork, "u"));
 			
 			t4.GuardMappingList.add(grdT41);
 			
@@ -255,7 +255,7 @@ public class RTC {
 			GuardMapping grdT42 = new GuardMapping();
 			grdT42.condition = T4Ct3;
 
-			grdT42.Activations.add(new Activation(t4, "PauseCommand", TransitionOperation.SendOverNetwork, "u"));
+			grdT42.Activations.add(new Activation(t4, "StartCommand", TransitionOperation.SendOverNetwork, "u"));
 			
 			t4.GuardMappingList.add(grdT42);
 			
