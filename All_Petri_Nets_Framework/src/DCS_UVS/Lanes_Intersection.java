@@ -310,7 +310,7 @@ public class Lanes_Intersection {
 
 		Condition T8Ct1 = new Condition(t8, "P_TL4", TransitionCondition.Equal, "green");
 		Condition T8Ct2 = new Condition(t8, "P_x4", TransitionCondition.HaveCar);
-		T6Ct1.SetNextCondition(LogicConnector.AND, T8Ct2);
+		T8Ct1.SetNextCondition(LogicConnector.AND, T8Ct2);
 
 		GuardMapping grdT8 = new GuardMapping();
 		grdT8.condition = T8Ct1;
