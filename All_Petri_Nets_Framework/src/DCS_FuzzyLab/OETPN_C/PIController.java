@@ -336,7 +336,7 @@ public class PIController {
 			t7.TransitionName = "T7";
 			t7.InputPlaceName.add("P9");
 
-			Condition T7Ct1 = new Condition(t6, "P9", TransitionCondition.NotNull);
+			Condition T7Ct1 = new Condition(t7, "P9", TransitionCondition.NotNull);
 
 			GuardMapping grdT7 = new GuardMapping();
 			grdT7.condition = T7Ct1;
